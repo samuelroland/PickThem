@@ -1,10 +1,31 @@
 <template>
-  <div class="text-3xl text-green-700">
-    PickThem<span class="text-sm italic">v1.0</span>
+  <div class="text-green-700">
+    <h1 class="text-3xl">PickThem</h1>
+    <span class="text-sm italic" title="Publié le 30.07.2021.">v1.0</span>
   </div>
   <div class="text-gray-600 italic">
-    App minimaliste pour choisir les membres qui feront les tâches reproductives
-    les 6 prochaines semaines.
+    <h4
+      title="Random members picker, to define the people responsible for things to do in a collective, over a given period and activities."
+      class="font-bold"
+    >
+      Choix aléatoire de membres, pour définir les responsables des choses à
+      faire dans un collectif, sur une période et des activités données.
+    </h4>
+    <br />
+    <span class="text-xs"
+      >Réalisé par
+      <a href="https://github.com/samuelroland" target="_blank"
+        >Samuel Roland</a
+      >
+      - publié sous licence libre
+      <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank"
+        >GNU AGPLv3</a
+      >
+      - Lien
+      <a href="https://github.com/samuelroland/PickThem" target="_blank"
+        >code source</a
+      >.
+    </span>
   </div>
   <hr />
 

@@ -20,3 +20,7 @@ textarea {
 button {
   @apply hover:bg-gray-400 bg-gray-300 rounded-sm px-1 font-bold;
 }
+
+a {
+  @apply font-semibold italic hover:text-green-500;
+}
