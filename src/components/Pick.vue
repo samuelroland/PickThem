@@ -217,6 +217,10 @@ export default {
     getRandomNotAssignedMember() {
       var randomInt = -1;
       do {
+        //if all users have been attributed, put the list to zero to allow second round of attributions
+        if (this.membersNotAssigned.length == 0) {
+          this.assignedMembers = [];
+        }
         randomInt = Math.round(Math.random() * this.nbMembers) + 1;
         if (randomInt > this.nbMembers) {
           randomInt = this.nbMembers;
