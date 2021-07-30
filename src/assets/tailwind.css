@@ -1,0 +1,22 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+.cell {
+  @apply border-solid border px-1 border-blue-400;
+}
+
+table {
+  @apply rounded-lg border-blue-800 border border-solid;
+}
+
+input,
+textarea {
+  @apply border-blue-700 border-solid border px-1 my-1 mx-2;
+}
+
+button {
+  @apply hover:bg-gray-400 bg-gray-300 rounded-sm px-1 font-bold;
+}
