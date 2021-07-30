@@ -1,18 +1,18 @@
 <template>
-<div class="p-5">
-  <Pick />
+  <div class="p-5">
+    <Pick />
   </div>
 </template>
 
 <script>
-import Pick from './components/Pick.vue'
+import Pick from "./components/Pick.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Pick
   }
-}
+};
 </script>
 
 <style>
@@ -22,6 +22,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

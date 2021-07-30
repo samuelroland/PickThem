@@ -1,6 +1,6 @@
 <template>
   <div class="text-green-700">
-    <h1 class="text-3xl">PickThem</h1>
+    <h1 class="text-3xl inline">PickThem</h1>
     <span class="text-sm italic" title="Publié le 30.07.2021.">v1.0</span>
   </div>
   <div class="text-gray-600 italic">
@@ -11,7 +11,6 @@
       Choix aléatoire de membres, pour définir les responsables des choses à
       faire dans un collectif, sur une période et des activités données.
     </h4>
-    <br />
     <span class="text-xs"
       >Réalisé par
       <a href="https://github.com/samuelroland" target="_blank"
