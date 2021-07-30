@@ -18,7 +18,7 @@
 <template>
   <div class="text-green-700">
     <h1 class="text-3xl inline">PickThem</h1>
-    <span class="text-sm italic" title="Publié le 30.07.2021.">v1.0</span>
+    <span class="text-sm italic" title="Publié le 31.07.2021.">v1.0</span>
   </div>
   <div class="text-gray-600 italic">
     <h4
