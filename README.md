@@ -22,6 +22,17 @@ Français: `Choix aléatoire de membres, pour définir les responsables des chos
 
 ![image](https://user-images.githubusercontent.com/78803322/127714305-19ddabc6-3f3e-4ffa-be14-06578e17722c.png)
 
+## How to use
+
+### Download
+Download the latest version under [Releases](https://github.com/samuelroland/PickThem/releases), unzip the file and open the `index.html` app. The app is only this file, all is locally in the browser (everything is deleted at page refresh), and it's totally offline.
+
+### Use
+1. Choose a number of weeks to generate
+1. Fill the tasks list activities (one per line, empty lines are ignored)
+1. Fill the members list (one per line, empty lines are ignored)
+1. 
+
 ## Project setup
 ```
 npm install
