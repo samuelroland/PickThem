@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 # PickThem
-### Random members picker, to define the people responsible for things to do in a collective, over a given period and activities. Built with Tailwindcss and VueJS.
+### Random members picker, to define the people responsible for things to do in a collective, over a given period and activities. Built with Tailwindcss and VueJS. The texts are written in French...
 
 Français: `Choix aléatoire de membres, pour définir les responsables des choses à faire dans un collectif, sur une période et des activités données.`
 
