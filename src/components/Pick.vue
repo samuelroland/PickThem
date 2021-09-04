@@ -16,9 +16,18 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div class="text-green-700">
-    <h1 class="text-3xl inline">PickThem</h1>
-    <span class="text-sm italic" title="Publié le 31.07.2021.">v1.0</span>
+  <div class="flex">
+    <div class="text-green-700 w-12 flex-1 flex items-end">
+      <h1 class="text-3xl inline">PickThem</h1>
+      <span class="text-sm italic" title="Publié le 31.07.2021.">v1.0</span>
+    </div>
+    <div>
+      <div
+        class="w-12 h-12 ml-3 border-2 border-green-800 bg-green-200 text-center flex items-center justify-center text-3xl rounded text-green-700"
+      >
+        PT
+      </div>
+    </div>
   </div>
   <div class="text-gray-600 italic">
     <h4
