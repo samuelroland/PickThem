@@ -32,7 +32,7 @@ table {
 
 input,
 textarea {
-  @apply border-blue-700 border-solid border px-1 my-1 mx-2;
+  @apply border-blue-700 border-solid border px-1 my-1;
 }
 
 button {
@@ -40,5 +40,5 @@ button {
 }
 
 a {
-  @apply font-semibold italic hover:text-green-500;
+  @apply font-semibold italic hover:text-green-500 text-green-800;
 }

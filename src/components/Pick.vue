@@ -19,7 +19,9 @@
   <div class="flex">
     <div class="text-green-700 w-12 flex-1 flex items-end">
       <h1 class="text-3xl inline">PickThem</h1>
-      <span class="text-sm italic" title="Publié le 31.07.2021.">v1.0</span>
+      <span class="text-sm ml-1 italic" title="Publié le 31.07.2021."
+        >v1.0</span
+      >
     </div>
     <div>
       <div
@@ -32,17 +34,26 @@
   <div class="text-gray-600 italic">
     <h4
       title="Random members picker, to define the people responsible for things to do in a collective, over a given period and activities."
-      class="font-bold"
+      class="font-bold mt-1"
     >
       Choix aléatoire de membres, pour définir les responsables des choses à
       faire dans un collectif, sur une période et des activités données.
     </h4>
-    <span class="text-xs"
-      >Réalisé par
+    <div>
+      <span class="not-italic">Voir le </span>
+      <a
+        href="https://github.com/samuelroland/PickThem/blob/main/HOWTOUSE.md#comment-utiliser"
+        target="_blank"
+        class="not-italic"
+        >manuel d'utilisation.</a
+      >
+    </div>
+    <span class="text-xs">
+      Réalisé par
       <a href="https://github.com/samuelroland" target="_blank"
         >Samuel Roland</a
       >
-      - publié sous licence libre
+      - Publié sous licence libre
       <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank"
         >GNU AGPLv3</a
       >
@@ -56,43 +67,54 @@
 
   <div>
     <div class="font-bold text-xl mt-1">Configuration</div>
-    <div class="flex justify-center">
+    <div class="">
       <div>
-        Nb de semaines:
+        Nombre de semaines
+        <span class="text-sm">(pour la plage à générer)</span>:
         <input class="w-12" type="number" min="1" v-model="nbWeeks" />
       </div>
     </div>
-    <div class="flex flex-grow">
-      <div class="w-full pr-3">
-        <div class="text-sm">{{ activities.length }} tâches détectées.</div>
+    <div class="">
+      <div class="w-full">
+        <div class="text-sm">
+          {{ activities.length }} activité{{
+            activities.length > 1 ? "s" : ""
+          }}
+          détectée{{ activities.length > 1 ? "s" : "" }}.
+        </div>
         <textarea
-          class="w-full"
+          class="w-full max-w-2xl"
           v-model="activitiesRaw"
-          rows="8"
-          placeholder="Liste de tâches: Rentrez une tâche par ligne."
+          rows="4"
+          placeholder="Liste d'activités: Rentrez une activité par ligne."
           @keyup="loadActivities"
         ></textarea>
       </div>
 
       <div class="w-full">
-        <div class="text-sm">{{ members.length }} membres détecté·es.</div>
+        <div class="text-sm">
+          {{ members.length }} membre{{
+            members.length > 1 ? "s" : ""
+          }}
+          détecté·e{{ members.length > 1 ? "s" : "" }}.
+        </div>
         <textarea
-          class="w-full"
+          class="w-full max-w-2xl"
           v-model="membersRaw"
           rows="8"
           placeholder="Liste de membres: Rentrez un·e membre par ligne."
-          @keyup.enter="loadMembers"
+          @keyup="loadMembers"
           @change="loadMembers"
         ></textarea>
       </div>
     </div>
 
     <div class="w-full justify-center">
-      <div class="my-1 flex justify-center items-center">
+      <div class="my-1 flex items-center">
         <div class="font-bold text-xl">Génération aléatoire</div>
         <button class="ml-2" @click="generate">Go</button>
       </div>
-      <div class="flex justify-center mb-3">
+      <div class="flex mb-3">
         <table class=" border-blue-300 border border-solid ">
           <thead>
             <tr>
