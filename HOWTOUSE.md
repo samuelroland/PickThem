@@ -2,7 +2,7 @@
 **PickThem** est une mini application web conçue pour attribuer aléatoirement des activités aux membres d'un collective. Ce n'est pas totalement aléatoire, parce que les membres ne sont pas attribués 2 fois tant que tou·tes les autres sont attribué·es (également pour les cas où il y a plus que 2 attributions par personne. Exemple: il n'est pas possible que la différence du nombre d'attributions d'une personne ne soit supérieur de 1, par rapport une autre). Le but est de faire participer tout le monde.
 
 ## Téléchargement
-- Téléchargez la dernière version sous [la page des publications](https://github.com/samuelroland/PickThem/releases) (la dernière version apparaît tout en haut).
+- Téléchargez la dernière version sous [la page des publications](https://github.com/samuelroland/PickThem/releases) (la dernière version apparaît tout en haut). Le fichier compressé se trouve sous `Assets` en bas de la publication et a un nom semblable à `PickThem-v1.0.zip`.
 - Désarchiver le fichier `.zip` (toute l'application se trouve dans ce dossier).
 - Ouvrez en double-cliquant le fichier `index.html`.
 - L'app devrait être ouverte dans votre navigateur web par défaut et vous pouvez l'utilisez.
