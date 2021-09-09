@@ -112,7 +112,8 @@
     <div class="w-full justify-center">
       <div class="my-1 flex items-center">
         <div class="font-bold text-xl">Génération aléatoire</div>
-        <button class="ml-2" @click="generate">Go</button>
+        <button class="ml-2" @click="generate">Générer</button>
+        <button class="ml-2" @click="emptyGeneration">Vider</button>
       </div>
       <div class="flex mb-3">
         <table class=" border-blue-300 border border-solid ">
@@ -252,6 +253,15 @@ export default {
           });
         }
         this.generated = true;
+      }
+    },
+    emptyGeneration() {
+      if (
+        this.generated == true &&
+        confirm("Souhaitez-vous vraiment vider les résultats générés ?")
+      ) {
+        this.initCells();
+        this.generated = false;
       }
     },
     displayCellOrNot(weeknumber, activityindex) {
