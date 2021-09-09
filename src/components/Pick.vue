@@ -97,6 +97,21 @@
             members.length > 1 ? "s" : ""
           }}
           détecté·e{{ members.length > 1 ? "s" : "" }}.
+          <input
+            type="checkbox"
+            v-model="priorityMode"
+            id="priorityMode"
+            class="ml-4"
+            @change="loadMembers"
+          /><label for="priorityMode" class="ml-1">Mode priorité.</label>
+          <span v-if="priorityMode" class="ml-1">
+            {{
+              members.filter(user => {
+                return user.priority;
+              }).length
+            }}
+            membres en priorité.</span
+          >
         </div>
         <textarea
           class="w-full max-w-2xl"
@@ -201,6 +216,7 @@ export default {
   name: "Pick",
   data() {
     return {
+      priorityMode: false,
       generated: false,
       nbWeeks: 6,
       activitiesRaw: "",
@@ -298,7 +314,20 @@ export default {
         counter++;
         this.members.push({
           id: counter,
-          name: name
+          name: this.priorityMode
+            ? name
+                .trim()
+                .substring(
+                  0,
+                  name.trim().indexOf("\t") != -1
+                    ? name.trim().indexOf("\t")
+                    : name.trim().length
+                )
+            : name,
+          //If priority mode enabled, set priority if last char is P, or set null.
+          priority: this.priorityMode
+            ? name.trim().charAt(name.trim().length - 1) == "P"
+            : null
         });
       }
     },
