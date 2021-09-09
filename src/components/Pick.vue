@@ -256,17 +256,51 @@ export default {
       }
     },
     generate() {
+      var assignationCount = 0;
       if (this.members.length != 0 && this.activities.length != 0) {
         this.assignedMembers = [];
+        console.log("heyooo");
+
         for (var i = 1; i <= this.nbWeeks; i++) {
-          this.cells[i].forEach((cell, weekIndex) => {
+          console.log("heyooo");
+          console.log(
+            this.cells[i].filter(cell => {
+              cell.member == null;
+            })
+          );
+          while (
+            this.cells[i].filter(cell => {
+              cell.member != null;
+            }).length != this.cells[i].length
+          ) {
+            console.log("heyooo");
+
+            var cell = null;
+            var activityIndex = null;
+
+            //Find randomly a cell without any member
+            do {
+              activityIndex = Math.random(0, this.activities.length - 1);
+              cell = this.cells[i][activityIndex];
+            } while (cell.member != null);
+
             console.log("heyooo");
             console.log(cell);
-            console.log(this.cells[i][weekIndex]);
+            console.log(this.cells[i][activityIndex]);
 
-            cell.member = this.getRandomNotAssignedMember();
-            this.cells[i][weekIndex] = cell;
-          });
+            var wantedMemberPriority = null;
+            if (this.priorityMode) {
+              // In yet in priority member assignation because number of members in priority in higher than assignations count.
+              wantedMemberPriority =
+                this.members.filter(member => {
+                  member.priority;
+                }).length > assignationCount;
+            }
+
+            cell.member = this.getRandomNotAssignedMember(wantedMemberPriority);
+            this.cells[i][activityIndex] = cell;
+            assignationCount++;
+          }
         }
         this.generated = true;
       }
@@ -288,7 +322,7 @@ export default {
       }
       //cell.week_number <= activities[cell.activity_index].number
     },
-    getRandomNotAssignedMember() {
+    getRandomNotAssignedMember(wantedMemberPriority = null) {
       var randomInt = -1;
       do {
         //if all users have been attributed, put the list to zero to allow second round of attributions
@@ -299,7 +333,9 @@ export default {
         if (randomInt > this.nbMembers) {
           randomInt = this.nbMembers;
         }
-      } while (this.assignedMembers.includes(randomInt));
+        var respectPriority =
+          this.members[randomInt].priority == wantedMemberPriority;
+      } while (this.assignedMembers.includes(randomInt) || !respectPriority);
       this.assignedMembers.push(randomInt);
       return randomInt;
     },
