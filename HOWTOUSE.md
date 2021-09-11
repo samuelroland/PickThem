@@ -1,5 +1,5 @@
 # Comment utiliser
-**PickThem** est une mini application web conçue pour attribuer aléatoirement des activités aux membres d'un collective. Ce n'est pas totalement aléatoire, parce que les membres ne sont pas attribués 2 fois tant que tou·tes les autres sont attribué·es (également pour les cas où il y a plus que 2 attributions par personne. Exemple: il n'est pas possible que la différence du nombre d'attributions d'une personne ne soit supérieur de 1, par rapport une autre). Le but est de faire participer tout le monde.
+**PickThem** est une mini application web conçue pour attribuer aléatoirement des activités aux membres d'un collective. Ce n'est pas totalement aléatoire, parce que les membres ne sont pas attribués 2 fois tant que tou·tes les autres sont attribué·es (également pour les cas où il y a plus que 2 attributions par personne. Donc, il n'est pas possible que la différence du nombre d'attributions d'une personne ne soit supérieur de 1, par rapport une autre). Le but est de faire participer tout le monde.
 
 ## Téléchargement
 - Téléchargez la dernière version sous [la page des publications](https://github.com/samuelroland/PickThem/releases) (la dernière version apparaît tout en haut). Le fichier compressé se trouve sous `Assets` en bas de la publication et a un nom semblable à `PickThem-v1.0.zip`.
@@ -11,10 +11,10 @@
 
 ## Utilisation
 1. Choisissez un nombre de semaine pour la plage à générer (6 par défaut)
-1. Remplissez la liste des membres et la liste des activités à la main (un élément par semaine, les lignes vides sont ignorées) ou en reprenant le contenu de votre liste
+1. Remplissez la liste des membres et la liste des activités à la main (un élément par ligne, les lignes vides sont ignorées) ou en reprenant le contenu de votre liste
 1. Choisissez le nombre de semaine par activité
 1. Cliquez sur `Go` pour la lancer la génération et les résultats apparaîtront. (Cliquez sur `Go` à nouveau si besoin de régénerer).
-1. Vous pouvez maintenant sauver le contenu du tableau ailleurs en le copiant-collant
+1. Vous pouvez maintenant sauver le contenu du tableau ailleurs en le copiant-collant ailleurs.
 
 ---
 # How to use
