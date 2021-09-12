@@ -17,24 +17,24 @@
 -->
 <template>
   <div class="flex">
-    <div class="text-green-700 w-12 flex-1 flex items-end">
-      <h1 class="text-3xl inline">PickThem</h1>
-      <span class="text-sm ml-1 italic" title="Publié le 31.07.2021."
+    <div class="flex items-end flex-1 w-12 text-green-700">
+      <h1 class="inline text-3xl">PickThem</h1>
+      <span class="ml-1 text-sm italic" title="Publié le 31.07.2021."
         >v1.0</span
       >
     </div>
     <div>
       <div
-        class="w-12 h-12 ml-3 border-2 border-green-800 bg-green-200 text-center flex items-center justify-center text-3xl rounded text-green-700"
+        class="flex items-center justify-center w-12 h-12 ml-3 text-3xl text-center text-green-700 bg-green-200 border-2 border-green-800 rounded"
       >
         PT
       </div>
     </div>
   </div>
-  <div class="text-gray-600 italic">
+  <div class="italic text-gray-600">
     <h4
       title="Random members picker, to define the people responsible for things to do in a collective, over a given period and activities."
-      class="font-bold mt-1"
+      class="mt-1 font-bold"
     >
       Choix aléatoire de membres, pour définir les responsables des choses à
       faire dans un collectif, sur une période et des activités données.
@@ -66,7 +66,7 @@
   <hr />
 
   <div>
-    <div class="font-bold text-xl mt-1">Configuration</div>
+    <div class="mt-1 text-xl font-bold">Configuration</div>
     <div class="">
       <div>
         Nombre de semaines
@@ -124,21 +124,21 @@
       </div>
     </div>
 
-    <div class="w-full justify-center">
-      <div class="my-1 flex items-center">
-        <div class="font-bold text-xl">Génération aléatoire</div>
+    <div class="justify-center w-full">
+      <div class="flex items-center my-1">
+        <div class="text-xl font-bold">Génération aléatoire</div>
         <button class="ml-2" @click="generate">Générer</button>
         <button class="ml-2" @click="emptyGeneration">Vider</button>
       </div>
       <div class="flex mb-3">
-        <table class=" border-blue-300 border border-solid ">
+        <table class="border border-blue-300 border-solid ">
           <thead>
             <tr>
-              <th class="cell h-5">
+              <th class="h-5 cell">
                 <div class="invisible">
                   <span class="text-sm">----</span><br />
                   <span class="text-xs">
-                    <input type="text" class="w-10 h-4 ml-1 text-xs mr-1"
+                    <input type="text" class="w-10 h-4 ml-1 mr-1 text-xs"
                   /></span>
                 </div>
               </th>
@@ -151,7 +151,7 @@
           </tbody>
         </table>
 
-        <table class="border-blue-300 border border-solid">
+        <table class="border border-blue-300 border-solid">
           <thead>
             <tr>
               <th
@@ -164,7 +164,7 @@
                 <span class="text-xs">
                   <input
                     type="number"
-                    class="w-10 h-4 ml-1 text-xs mr-1"
+                    class="w-10 h-4 ml-1 mr-1 text-xs"
                     :max="nbWeeks"
                     min="1"
                     v-model="activity.number"
@@ -199,8 +199,8 @@
           <div class="text-lg">Résultats</div>
           <span>{{ assignedMembers.length }} assigné·es</span>
           - <span>{{ membersNotAssigned.length }} non assigné·es</span>
-          <div class="font-bold mt-2">Membres non assigné·es:</div>
-          <div class="flex justify-center flex-wrap">
+          <div class="mt-2 font-bold">Membres non assigné·es:</div>
+          <div class="flex flex-wrap justify-center">
             <div class="ml-1" v-for="id in membersNotAssigned" :key="id">
               {{ id }}
             </div>
@@ -216,9 +216,9 @@ export default {
   name: "Pick",
   data() {
     return {
-      priorityMode: false,
+      priorityMode: true,
       generated: false,
-      nbWeeks: 6,
+      nbWeeks: 2,
       activitiesRaw: "",
       cells: [],
       activities: [],
@@ -256,37 +256,52 @@ export default {
       }
     },
     generate() {
-      var assignationCount = 0;
-      if (this.members.length != 0 && this.activities.length != 0) {
-        this.assignedMembers = [];
-        console.log("heyooo");
+      var assignationCount = 0; //total number of assignations
 
-        for (var i = 1; i <= this.nbWeeks; i++) {
-          console.log("heyooo");
+      //Generate only if members and activities list are not empty
+      if (this.members.length != 0 && this.activities.length != 0) {
+        this.assignedMembers = []; //Clear assigned members list defined at last generation
+        console.log("generate()");
+
+        //For each week (each line of the array)
+        for (var weekId = 1; weekId <= this.nbWeeks; weekId++) {
+          console.log("test cells i find");
           console.log(
-            this.cells[i].filter(cell => {
-              cell.member == null;
+            this.cells[weekId].find(cell => {
+              return cell.member == null;
             })
           );
+
+          //While some cells without member exist for the week, assign users for these cells
           while (
-            this.cells[i].filter(cell => {
-              cell.member != null;
-            }).length != this.cells[i].length
+            this.cells[weekId].find(cell => {
+              return cell.member == null;
+            }) != undefined
           ) {
-            console.log("heyooo");
+            console.log("while 281");
 
             var cell = null;
             var activityIndex = null;
 
-            //Find randomly a cell without any member
+            //In this week, find randomly a cell without any member
             do {
-              activityIndex = Math.random(0, this.activities.length - 1);
-              cell = this.cells[i][activityIndex];
-            } while (cell.member != null);
+              //Cell is choosed depending on the activity, so generate a random int between 0 and (nb of activities -1)
+              activityIndex = Math.round(
+                Math.random(0) * this.activities.length - 1
+              );
+              //TODO: fix activityIndex buggy generation
+              console.log(Math.random() * this.activities.length - 1);
+              console.log(Math.random(0));
+              console.log(Math.random(8));
+              console.log(Math.random());
+              console.log(activityIndex);
+              console.log(this.cells[weekId]);
+              cell = this.cells[weekId][activityIndex];
+            } while (cell.member != null); //and continue while no cell without member is found (will not cause infinite loop because parent)
 
             console.log("heyooo");
             console.log(cell);
-            console.log(this.cells[i][activityIndex]);
+            console.log(this.cells[weekId][activityIndex]);
 
             var wantedMemberPriority = null;
             if (this.priorityMode) {
@@ -298,7 +313,7 @@ export default {
             }
 
             cell.member = this.getRandomNotAssignedMember(wantedMemberPriority);
-            this.cells[i][activityIndex] = cell;
+            this.cells[weekId][activityIndex] = cell;
             assignationCount++;
           }
         }
@@ -324,6 +339,7 @@ export default {
     },
     getRandomNotAssignedMember(wantedMemberPriority = null) {
       var randomInt = -1;
+      var a = false;
       do {
         //if all users have been attributed, put the list to zero to allow second round of attributions
         if (this.membersNotAssigned.length == 0) {
@@ -333,9 +349,12 @@ export default {
         if (randomInt > this.nbMembers) {
           randomInt = this.nbMembers;
         }
+        console.log(randomInt);
         var respectPriority =
-          this.members[randomInt].priority == wantedMemberPriority;
-      } while (this.assignedMembers.includes(randomInt) || !respectPriority);
+          this.members[randomInt - 1].priority == wantedMemberPriority;
+        console.log(respectPriority);
+        console.log(this.assignedMembers);
+      } while (a);
       this.assignedMembers.push(randomInt);
       return randomInt;
     },
