@@ -287,7 +287,7 @@ export default {
             do {
               //Cell is choosed depending on the activity, so generate a random int between 0 and (nb of activities -1)
               activityIndex = Math.round(
-                Math.random(0) * this.activities.length - 1
+                Math.random(0) * (this.activities.length - 1)
               );
               //TODO: fix activityIndex buggy generation
               console.log(Math.random() * this.activities.length - 1);
