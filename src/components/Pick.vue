@@ -194,7 +194,7 @@
           </tbody>
         </table>
       </div>
-      <div v-if="generated" hidden>
+      <div v-if="generated">
         <div class="ml-1">
           <div class="text-lg">Résultats</div>
           <span>{{ assignedMembers.length }} assigné·es</span>
@@ -204,6 +204,29 @@
             <div class="ml-1" v-for="id in membersNotAssigned" :key="id">
               {{ id }}
             </div>
+          </div>
+        </div>
+        <div>
+          <div class="text-lg">Résultats</div>
+          <div>
+            <ul>
+              <li
+                v-for="(assignationsForOneUser, index) in assignationsByUser"
+                :key="index"
+              >
+                {{ "userid:" + assignationsForOneUser[0].id }} -
+                {{
+                  this.members.find(member => {
+                    return member.id == assignationsForOneUser[0].id;
+                  }) != null
+                    ? this.members.find(member => {
+                        return member.id == assignationsForOneUser[0].id;
+                      }).name
+                    : assignationsForOneUser[0].id
+                }}
+                - {{ assignationsForOneUser.length }}
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -228,6 +251,32 @@ export default {
     };
   },
   computed: {
+    assignationsByUser() {
+      if (this.generated) {
+        var assignations = [];
+
+        console.log(this.arrayOfCells);
+
+        for (var member of this.members) {
+          console.log("member");
+          console.log(member);
+          if (assignations[member.id] == undefined) {
+            console.log(assignations);
+
+            assignations[member.id] = [];
+          }
+          console.log(JSON.parse(JSON.stringify(this.cells)));
+
+          //Push all assignations of a user to the assignations array indexed by id
+          assignations[member.id] = this.arrayOfCells.filter(cell => {
+            return cell.member == member.id;
+          });
+          console.log(assignations);
+        }
+        return assignations;
+      }
+      return [];
+    },
     nbMembers() {
       return this.members.length;
     },
@@ -241,6 +290,19 @@ export default {
           array.push(i);
         }
       }
+      return array;
+    },
+    arrayOfCells() {
+      var array = [];
+      if (this.members.length > 0 && this.activities.length > 0)
+        for (var cellByWeek in this.cells) {
+          console.log("cellByWeek");
+          console.log(cellByWeek);
+
+          for (var cell of this.cells[cellByWeek]) {
+            array.push(cell);
+          }
+        }
       return array;
     }
   },
