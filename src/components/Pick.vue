@@ -71,7 +71,13 @@
       <div>
         Nombre de semaines
         <span class="text-sm">(pour la plage à générer)</span>:
-        <input class="w-12" type="number" min="1" v-model="nbWeeks" />
+        <input
+          @change="initCells"
+          class="w-12"
+          type="number"
+          min="1"
+          v-model="nbWeeks"
+        />
       </div>
     </div>
     <div class="">
@@ -167,6 +173,7 @@
                     class="w-10 h-4 ml-1 mr-1 text-xs"
                     :max="nbWeeks"
                     min="1"
+                    @change="initCells"
                     v-model="activity.number"
                   />fois</span
                 >
@@ -476,12 +483,17 @@ export default {
         var weekCollection = [];
         for (var j = 1; j <= this.activities.length; j++) {
           counter++;
+          console.log("i + j");
+          console.log(i);
+          console.log(j);
+          console.log(this.activities[j - 1]);
           var cell = {
             id: counter,
             member: null,
             activity_index: j - 1,
             activity_name: this.activities[j - 1].name,
-            week_number: i
+            week_number: i,
+            toassign: i <= this.activities[j - 1].number //if the cell must be assigned (but not be assigned when not every week are concerned for the current activity)
           };
           weekCollection.push(cell);
         }
