@@ -216,10 +216,10 @@
         <div>
           <div class="text-lg">Résultats</div>
           <div>
-            <ul>
+            <ul v-if="false">
               <li
-                v-for="(assignationsForOneUser, index) in assignationsByUser"
-                :key="index"
+                v-for="assignationsForOneUser in assignationsByUser"
+                :key="assignationsForOneUser"
               >
                 {{ "userid:" + assignationsForOneUser[0].id }} -
                 {{
@@ -303,9 +303,6 @@ export default {
       var array = [];
       if (this.members.length > 0 && this.activities.length > 0)
         for (var cellByWeek in this.cells) {
-          console.log("cellByWeek");
-          console.log(cellByWeek);
-
           for (var cell of this.cells[cellByWeek]) {
             array.push(cell);
           }
@@ -326,6 +323,8 @@ export default {
     },
     generate() {
       var assignationCount = 0; //total number of assignations
+      this.initCells();
+      this.generated = false;
 
       //Generate only if members and activities list are not empty
       if (this.members.length != 0 && this.activities.length != 0) {
@@ -341,10 +340,10 @@ export default {
             })
           );
 
-          //While some cells without member exist for the week, assign users for these cells
+          //While some cells not assigned and should be assigned (toassign = true) exist for the week, assign users for these cells
           while (
             this.cells[weekId].find(cell => {
-              return cell.member == null;
+              return cell.member == null && cell.toassign == true;
             }) != undefined
           ) {
             console.log("while 281");
@@ -356,21 +355,12 @@ export default {
             do {
               //Cell is choosed depending on the activity, so generate a random int between 0 and (nb of activities -1)
               activityIndex = Math.round(
-                Math.random(0) * (this.activities.length - 1)
+                Math.random() * (this.activities.length - 1)
               );
-              //TODO: fix activityIndex buggy generation
-              console.log(Math.random() * this.activities.length - 1);
-              console.log(Math.random(0));
-              console.log(Math.random(8));
-              console.log(Math.random());
               console.log(activityIndex);
               console.log(this.cells[weekId]);
               cell = this.cells[weekId][activityIndex];
-            } while (cell.member != null); //and continue while no cell without member is found (will not cause infinite loop because parent)
-
-            console.log("heyooo");
-            console.log(cell);
-            console.log(this.cells[weekId][activityIndex]);
+            } while (cell.member != null || cell.toassign != true); //and continue while no cell without member is found (will not cause infinite loop because parent)
 
             var wantedMemberPriority = null;
             if (this.priorityMode) {
@@ -418,11 +408,9 @@ export default {
         if (randomInt > this.nbMembers) {
           randomInt = this.nbMembers;
         }
-        console.log(randomInt);
+
         var respectPriority =
           this.members[randomInt - 1].priority == wantedMemberPriority;
-        console.log(respectPriority);
-        console.log(this.assignedMembers);
       } while (a);
       this.assignedMembers.push(randomInt);
       return randomInt;
