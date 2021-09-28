@@ -191,6 +191,7 @@
                   {{ cell.member != null ? getNameOfMember(cell.member) : "-" }}
                 </span>
                 <span v-else>--</span>
+                <span>toassign: {{ cell.toassign ? 1 : 0 }}</span>
                 <span class="text-xs" hidden>
                   {{ cell.id }} {{ cell.activity_name }}
                   {{ cell.activity_index }} u:{{ cell.member }}
@@ -221,17 +222,21 @@
                 v-for="assignationsForOneUser in assignationsByUser"
                 :key="assignationsForOneUser"
               >
-                {{ "userid:" + assignationsForOneUser[0].id }} -
+                {{
+                  "userid:" + assignationsForOneUser ??
+                    assignationsForOneUser[0].id
+                }}
+                -
                 {{
                   this.members.find(member => {
-                    return member.id == assignationsForOneUser[0].id;
+                    return member.id == assignationsForOneUser[0].id ?? -1;
                   }) != null
                     ? this.members.find(member => {
                         return member.id == assignationsForOneUser[0].id;
                       }).name
                     : assignationsForOneUser[0].id
                 }}
-                - {{ assignationsForOneUser.length }}
+                - {{ assignationsForOneUser ?? assignationsForOneUser.length }}
               </li>
             </ul>
           </div>
@@ -246,15 +251,15 @@ export default {
   name: "Pick",
   data() {
     return {
-      priorityMode: true,
+      priorityMode: false,
       generated: false,
       nbWeeks: 2,
-      activitiesRaw: "",
+      activitiesRaw: "pain\nfromage\ntodo",
       cells: [],
       activities: [],
       assignedMembers: [],
       members: [],
-      membersRaw: ""
+      membersRaw: "Johndoe\nAlicia\nJack\nLion"
     };
   },
   computed: {
@@ -267,17 +272,33 @@ export default {
         for (var member of this.members) {
           console.log("member");
           console.log(member);
-          if (assignations[member.id] == undefined) {
-            console.log(assignations);
-
-            assignations[member.id] = [];
-          }
-          console.log(JSON.parse(JSON.stringify(this.cells)));
+          console.log(assignations);
+          console.log("member.id:" + member.id);
+          //if (assignations[member.id] == undefined) {
+          //  console.log(assignations);
+          //
+          //  assignations[member.id] = [];
+          //}
+          //console.log(JSON.parse(JSON.stringify(this.cells)));
 
           //Push all assignations of a user to the assignations array indexed by id
-          assignations[member.id] = this.arrayOfCells.filter(cell => {
-            return cell.member == member.id;
-          });
+          assignations[member.id] = JSON.parse(
+            JSON.stringify(
+              this.arrayOfCells.filter(cell => {
+                return cell.member == member.id;
+              })
+            )
+          );
+
+          console.log(
+            JSON.parse(
+              JSON.stringify(
+                this.arrayOfCells.filter(cell => {
+                  return cell.member == member.id;
+                })
+              )
+            )
+          );
           console.log(assignations);
         }
         return assignations;
@@ -411,6 +432,7 @@ export default {
 
         var respectPriority =
           this.members[randomInt - 1].priority == wantedMemberPriority;
+        console.log(respectPriority);
       } while (a);
       this.assignedMembers.push(randomInt);
       return randomInt;
@@ -492,6 +514,7 @@ export default {
   },
   mounted() {
     this.loadActivities();
+    this.loadMembers();
     this.initCells();
   }
 };
