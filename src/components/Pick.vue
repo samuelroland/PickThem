@@ -72,7 +72,7 @@
         Nombre de semaines
         <span class="text-sm">(pour la plage à générer)</span>:
         <input
-          @change="initCells"
+          @change="onNbWeeksChange"
           class="w-12"
           type="number"
           min="1"
@@ -332,6 +332,14 @@ export default {
     }
   },
   methods: {
+    //On change on this.nbWeeks through the input, set all activity.number to the new value
+    onNbWeeksChange() {
+      this.activities.forEach(activity => {
+        activity.number = this.nbWeeks;
+      });
+      //Then init cells
+      this.initCells();
+    },
     getNameOfMember(id) {
       var member = this.members.find(member => {
         return member.id == id;
