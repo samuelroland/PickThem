@@ -463,6 +463,10 @@ export default {
 
     //Load activities from this.activitiesRaw (raw textual list) to this.activities (array of activities)
     loadActivities() {
+      //Replace every tab with an enter char. To import activities list faster with copy paste from a spreadsheet. (When you copy cells in spreadsheet, you got tab char between values).
+      if (this.activitiesRaw.indexOf("\t") != -1) {
+        this.activitiesRaw = this.activitiesRaw.replaceAll("\t", "\n");
+      }
       var array = this.activitiesRaw.split("\n").filter(val => {
         return val.trim() != "";
       });
