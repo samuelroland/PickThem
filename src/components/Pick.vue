@@ -368,7 +368,7 @@ export default {
   name: "Pick",
   data() {
     return {
-      priorityMode: false,
+      priorityMode: true,
       generated: false,
       nbWeeks: 2,
       activitiesRaw: "Vaisselle\nRangement\nLessive",
@@ -376,7 +376,7 @@ export default {
       activities: [],
       assignedMembers: [],
       members: [],
-      membersRaw: "Johndoe\nAlicia\nJack\nLion"
+      membersRaw:
         "Johndoe	P\nAlicia	P\nJack\nLion\nJulie\nSam	P\nJohnson\nLili\nMila"
     };
   },
