@@ -142,7 +142,7 @@
 
     <div class="justify-center w-full">
       <div class="flex items-center my-1">
-        <div class="text-xl font-bold">Génération aléatoire</div>
+        <div class="mr-3 text-xl font-bold">Génération aléatoire</div>
         <button
           class="ml-2 hover:bg-green-600 hover:text-gray-100"
           @click="generate"
@@ -217,8 +217,21 @@
           </thead>
           <tbody>
             <tr v-for="week in nbWeeksInInt" :key="week">
-              <td class="cell" v-for="cell in cells[week]" :key="cell.id">
-                <span class="text-base italic">
+              <td
+                class="text-center cell"
+                v-for="cell in cells[week]"
+                :key="cell.id"
+              >
+                <!-- Cell content. Display bold if it's a priority member. -->
+                <span
+                  class="text-base italic"
+                  :class="{
+                    'font-bold':
+                      cell.member != null
+                        ? members[cell.member - 1].priority && priorityMode
+                        : false
+                  }"
+                >
                   {{
                     cell.member != null
                       ? getNameOfMember(cell.member)
@@ -238,16 +251,111 @@
           </tbody>
         </table>
       </div>
+
+      <!-- Statistics zone -->
       <div v-if="true">
+        <!-- debug temp -->
         <div>
           <div class="text-lg font-bold">Statistiques</div>
           <div>
-            <ul>
-              <li v-for="member in assignationsByMember" :key="member.id">
-                {{ member.list.length ?? 0 }}
-                {{ getNameOfMember(member.id) }}
-              </li>
-            </ul>
+            <!-- Statistics table -->
+            <table>
+              <thead>
+                <tr>
+                  <th class="cell whitespace-nowrap">Nb. assignations</th>
+                  <th class="cell whitespace-nowrap">Nb. membres</th>
+                  <th class="cell whitespace-nowrap">
+                    Membres
+
+                    <!-- Interrogation mark to explain what are bold members -->
+                    <span v-if="priorityMode"
+                      ><span
+                        title="Les membres prioritaires sont en gras."
+                        class="interrogationmark"
+                        >?
+                      </span></span
+                    >
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- One line per number until maximum is reached. Decrement count =  getBiggestAssignationCount - n + 1 -->
+                <tr v-for="n in getBiggestAssignationCount + 1" :key="n">
+                  <!-- As v-if with v-for is not possible, apply the v-if on the 3 header cell. The goal is to display only row that display members.-->
+                  <td
+                    class="text-center cell"
+                    v-if="
+                      membersForGivenAssignationCount(
+                        getBiggestAssignationCount - n + 1
+                      ).length != 0
+                    "
+                  >
+                    {{ getBiggestAssignationCount - n + 1 }}
+                  </td>
+                  <td
+                    class="text-center cell"
+                    v-if="
+                      membersForGivenAssignationCount(
+                        getBiggestAssignationCount - n + 1
+                      ).length != 0
+                    "
+                  >
+                    {{
+                      membersForGivenAssignationCount(
+                        getBiggestAssignationCount - n + 1
+                      ).length
+                    }}
+                  </td>
+                  <td
+                    class="cell"
+                    v-if="
+                      membersForGivenAssignationCount(
+                        getBiggestAssignationCount - n + 1
+                      ).length != 0
+                    "
+                  >
+                    <div>
+                      <span
+                        v-for="(member,
+                        index) in membersForGivenAssignationCount(
+                          getBiggestAssignationCount - n + 1
+                        )"
+                        :key="member"
+                      >
+                        <span
+                          v-if="member != undefined"
+                          :class="{
+                            'font-bold': member.priority && priorityMode
+                          }"
+                        >
+                          {{ member.name }}
+                          <!-- Display a dash, except when the member is the last one in the list -->
+                          {{
+                            membersForGivenAssignationCount(
+                              getBiggestAssignationCount - n + 1
+                            ).length >
+                            index + 1
+                              ? " - "
+                              : ""
+                          }}
+                        </span></span
+                      >
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="text-center cell">
+                    Assignations:
+                    {{
+                      this.arrayOfCells.filter(cell => {
+                        return cell.member != null;
+                      }).length
+                    }}
+                  </td>
+                  <td class="text-center cell">{{ this.members.length }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -263,17 +371,27 @@ export default {
       priorityMode: false,
       generated: false,
       nbWeeks: 2,
-      activitiesRaw: "pain\nfromage\ntodo",
+      activitiesRaw: "Vaisselle\nRangement\nLessive",
       cells: [],
       activities: [],
       assignedMembers: [],
       members: [],
       membersRaw: "Johndoe\nAlicia\nJack\nLion"
+        "Johndoe	P\nAlicia	P\nJack\nLion\nJulie\nSam	P\nJohnson\nLili\nMila"
     };
   },
   computed: {
+    //Get the biggest assignation count for the statistics array with the first row
+    getBiggestAssignationCount() {
+      var max = 0;
+      this.assignationsByMember.forEach(member => {
+        max = member.list.length > max ? member.list.length : max;
+      });
+      return max;
+    },
     assignationsByMember() {
-      if (this.generated) {
+      //debug temp
+      if (this.generated == false) {
         var assignations = [];
         var oneMemberAssignation;
 
@@ -324,6 +442,18 @@ export default {
     }
   },
   methods: {
+    //Get array of members who have a certain number of assignations (useful for the statistics table)
+    membersForGivenAssignationCount(count) {
+      var array = [];
+      for (var member of this.assignationsByMember) {
+        if (member.list.length == count) {
+          array.push(this.members[member.id - 1]); //push the member object to the array
+        }
+      }
+      console.log(count);
+      console.log(array);
+      return array;
+    },
     //Count priority members
     countPriorityMembers() {
       return this.members.filter(member => {
