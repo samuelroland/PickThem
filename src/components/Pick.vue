@@ -39,15 +39,6 @@
       Choix aléatoire de membres, pour définir les responsables des choses à
       faire dans un collectif, sur une période et des activités données.
     </h4>
-    <div>
-      <span class="not-italic">Voir le </span>
-      <a
-        href="https://github.com/samuelroland/PickThem/blob/main/HOWTOUSE.md#comment-utiliser"
-        target="_blank"
-        class="not-italic"
-        >manuel d'utilisation.</a
-      >
-    </div>
     <span class="text-xs">
       Réalisé par
       <a href="https://github.com/samuelroland" target="_blank"
@@ -66,7 +57,18 @@
   <hr />
 
   <div>
-    <div class="mt-1 text-xl font-bold">Configuration</div>
+    <div class="flex flex-wrap">
+      <div class="flex-1 mt-1 text-xl font-bold">Configuration</div>
+      <div class="mt-1">
+        <span class="not-italic"></span>
+        <a
+          href="https://github.com/samuelroland/PickThem/blob/main/HOWTOUSE.md#comment-utiliser"
+          target="_blank"
+          class="not-italic"
+          >Manuel d'utilisation.</a
+        >
+      </div>
+    </div>
     <div class="">
       <div>
         Nombre de semaines
