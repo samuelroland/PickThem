@@ -150,7 +150,7 @@
           Générer
         </button>
         <button class="ml-2 hover:bg-red-300" @click="emptyGeneration">
-          Vider
+          Vider ...
         </button>
       </div>
       <div class="flex mb-3">
@@ -227,7 +227,7 @@
                       : "/"
                   }}
                 </span>
-                <span v-if="true"> toa{{ cell.toassign ? 1 : 0 }}</span>
+                <span v-if="false"> toa{{ cell.toassign ? 1 : 0 }}</span>
                 <span class="text-xs" hidden>
                   {{ cell.id }} {{ cell.activity_name }}
                   {{ cell.activity_index }} u:{{ cell.member }}
@@ -238,7 +238,7 @@
           </tbody>
         </table>
       </div>
-      <div v-if="generated">
+      <div v-if="true">
         <div>
           <div class="text-lg font-bold">Statistiques</div>
           <div>
@@ -377,7 +377,7 @@ export default {
             })
           );
 
-          //While some cells not assigned and should be assigned (toassign = true) exist for the week, assign members for these cells
+          //While some cells not assigned and that should be assigned (toassign = true) exist for the current week, continue to assign members for these cells
           while (
             this.cells[weekId].find(cell => {
               return cell.member == null && cell.toassign == true;
@@ -390,12 +390,12 @@ export default {
 
             //In this week, find randomly a cell without any member
             do {
-              //Cell is choosed depending on the activity, so generate a random int between 0 and (nb of activities -1)
+              //Cell is chosen depending on the activity, so generate a random int between 0 and (nb of activities -1)
               activityIndex = Math.round(
                 Math.random() * (this.activities.length - 1)
               );
-              console.log(activityIndex);
-              console.log(this.cells[weekId]);
+              //console.log(activityIndex);
+              //console.log(this.cells[weekId]);
               cell = this.cells[weekId][activityIndex];
             } while (cell.member != null || cell.toassign != true); //and continue while no cell without member is found (will not cause infinite loop because parent)
 
@@ -403,9 +403,7 @@ export default {
             if (this.priorityMode) {
               // In yet in priority member assignation because number of members in priority in higher than assignations count.
               wantedMemberPriority =
-                this.members.filter(member => {
-                  member.priority;
-                }).length > assignationCount;
+                this.countPriorityMembers() > assignationCount;
             }
 
             cell.member = this.getRandomNotAssignedMember(wantedMemberPriority);
@@ -434,24 +432,20 @@ export default {
       //cell.week_number <= activities[cell.activity_index].number
     },
     getRandomNotAssignedMember(wantedMemberPriority = null) {
-      var randomInt = -1;
-      var a = false;
+      var randomMemberId = -1;
       do {
-        //if all members have been assigned, put the list to zero to allow second round of attributions
+        //if all members have been assigned, every member has the same number of assignation, so put the list to zero to allow second (and next) "round" of attributions
         if (this.membersNotAssigned.length == 0) {
           this.assignedMembers = [];
         }
-        randomInt = Math.round(Math.random() * this.nbMembers) + 1;
-        if (randomInt > this.nbMembers) {
-          randomInt = this.nbMembers;
-        }
+        randomMemberId = Math.round(Math.random() * (this.nbMembers - 1)) + 1; //get a random member id (random in between 1 and nbMembers inclusive)
 
         var respectPriority =
-          this.members[randomInt - 1].priority == wantedMemberPriority;
+          this.members[randomMemberId - 1].priority == wantedMemberPriority;
         console.log(respectPriority);
-      } while (a);
-      this.assignedMembers.push(randomInt);
-      return randomInt;
+      } while (this.assignedMembers.includes(randomMemberId) == true); //while the member is already assigned (at last "round") (meaning that the member is in assignedMembers array)
+      this.assignedMembers.push(randomMemberId); //add the chosen member to the list of assigned members
+      return randomMemberId;
     },
     //Load members from this.membersRaw (raw textual list) to this.members (array of members)
     loadMembers() {
