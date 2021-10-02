@@ -125,7 +125,9 @@
           /><label for="priorityMode" class="ml-1">Mode priorité.</label>
           <span v-if="priorityMode" class="ml-1">
             {{ countPriorityMembers() }}
-            membre{{ countPriorityMembers() > 1 ? "s" : "" }} en priorité.</span
+            membre{{ countPriorityMembers() > 1 ? "s" : "" }} prioritaire{{
+              countPriorityMembers() > 1 ? "s" : ""
+            }}.</span
           >
         </div>
         <textarea
@@ -377,7 +379,7 @@ export default {
       assignedMembers: [],
       members: [],
       membersRaw:
-        "Johndoe	P\nAlicia	P\nJack\nLion\nJulie\nSam	P\nJohnson\nLili\nMila"
+        "Johndoe	P\nAlicia	P\nJack\nLion\nJulie\nSam	P\nJohnson\nLili\nMila	P"
     };
   },
   computed: {
@@ -529,14 +531,14 @@ export default {
               cell = this.cells[weekId][activityIndex];
             } while (cell.member != null || cell.toassign != true); //and continue while no cell without member is found (will not cause infinite loop because parent)
 
-            var wantedMemberPriority = null;
+            var priorityMemberOnly = false;
             if (this.priorityMode) {
               // In yet in priority member assignation because number of members in priority in higher than assignations count.
-              wantedMemberPriority =
+              priorityMemberOnly =
                 this.countPriorityMembers() > assignationCount;
             }
 
-            cell.member = this.getRandomNotAssignedMember(wantedMemberPriority);
+            cell.member = this.getRandomNotAssignedMember(priorityMemberOnly);
             this.cells[weekId][activityIndex] = cell;
             assignationCount++;
           }
@@ -561,19 +563,28 @@ export default {
       }
       //cell.week_number <= activities[cell.activity_index].number
     },
-    getRandomNotAssignedMember(wantedMemberPriority = null) {
+    //Get a random not assigned member. If priorityMemberOnly == true, choose only a priority member.
+    getRandomNotAssignedMember(priorityMemberOnly = false) {
       var randomMemberId = -1;
+
+      //Search for a random member not assigned (look in notAssignedMembers for that) and that is priority if required
       do {
-        //if all members have been assigned, every member has the same number of assignation, so put the list to zero to allow second (and next) "round" of attributions
+        //When every member has been assigned, reset the assignedMembers array for the next round
         if (this.membersNotAssigned.length == 0) {
           this.assignedMembers = [];
         }
-        randomMemberId = Math.round(Math.random() * (this.nbMembers - 1)) + 1; //get a random member id (random in between 1 and nbMembers inclusive)
 
-        var respectPriority =
-          this.members[randomMemberId - 1].priority == wantedMemberPriority;
-        console.log(respectPriority);
-      } while (this.assignedMembers.includes(randomMemberId) == true); //while the member is already assigned (at last "round") (meaning that the member is in assignedMembers array)
+        randomMemberId = Math.round(Math.random() * (this.nbMembers - 1)) + 1; //get a random member id (random integer between 1 and nbMembers inclusive)
+
+        //Is the member in priority (if required by priorityMemberOnly) ?
+        var isPriorityIfRequired = priorityMemberOnly
+          ? this.members[randomMemberId - 1].priority == true
+          : true;
+      } while (
+        this.assignedMembers.includes(randomMemberId) == true ||
+        isPriorityIfRequired == false
+      ); //while the member is already assigned and if isPriorityIfRequired is not respected
+
       this.assignedMembers.push(randomMemberId); //add the chosen member to the list of assigned members
       return randomMemberId;
     },
