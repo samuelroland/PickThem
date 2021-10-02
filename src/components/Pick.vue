@@ -437,13 +437,13 @@ export default {
       this.assignedMembers.push(randomInt);
       return randomInt;
     },
+    //Load members from this.membersRaw (raw textual list) to this.members (array of members)
     loadMembers() {
       var counter = 0;
       var array = this.membersRaw.split("\n").filter(val => {
         return val.trim() != "";
       });
       this.members = [];
-      console.log(this.members);
       for (var name of array) {
         counter++;
         this.members.push({
@@ -465,12 +465,13 @@ export default {
         });
       }
     },
+
+    //Load activities from this.activitiesRaw (raw textual list) to this.activities (array of activities)
     loadActivities() {
       var array = this.activitiesRaw.split("\n").filter(val => {
         return val.trim() != "";
       });
       this.activities = [];
-      console.log(this.activities);
       for (var activityName of array) {
         this.activities.push({
           name: activityName,
@@ -486,33 +487,38 @@ export default {
       }
       this.initCells();
     },
+
+    //Init this.cells with given activities and different numbers of week
     initCells() {
-      var counter = 0;
-      var obj = {};
+      var counter = 0; //Counter of created cell to assign id to cell
+      var cells = {}; //Cells array under construction. The array is indexed by week number and then by activity index. (Be careful between difference with index and number !)
+
+      //As first indexed by week, let's loop on the given number of weeks
       for (var i = 1; i <= this.nbWeeks; i++) {
-        var weekCollection = [];
+        var weekCollection = []; //Create another array for this week
+
+        //As secondly indexed by activity, loop through them
         for (var j = 1; j <= this.activities.length; j++) {
           counter++;
-          console.log("i + j");
-          console.log(i);
-          console.log(j);
-          console.log(this.activities[j - 1]);
+
+          //Finally define the cell fields
           var cell = {
             id: counter,
             member: null,
             activity_index: j - 1,
-            activity_name: this.activities[j - 1].name,
+            activity_name: this.activities[j - 1].name, //field unused just for debug purpose
             week_number: i,
-            toassign: i <= this.activities[j - 1].number //if the cell must be assigned (but not be assigned when not every week are concerned for the current activity)
+            toassign: i <= this.activities[j - 1].number //If the cell must be assigned to a member or not (a "cell to not assign" case happens only when activity.number is less than this.nbWeeks )
           };
           weekCollection.push(cell);
         }
-        obj[i] = weekCollection;
+        cells[i] = weekCollection;
       }
-      this.cells = obj;
+      this.cells = cells;
     }
   },
   mounted() {
+    //When app is mounted, load members, activities and init cells (in case fields are already filled). Mostly during development but maybe in production too.
     this.loadActivities();
     this.loadMembers();
     this.initCells();
