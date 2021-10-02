@@ -84,12 +84,14 @@
     </div>
     <div class="">
       <div class="w-full">
-        <div class="inline mt-1 text-lg font-bold">Liste des activités</div>
-        <div class="inline ml-3 text-sm">
-          {{ activities.length }} activité{{
-            activities.length > 1 ? "s" : ""
-          }}
-          détectée{{ activities.length > 1 ? "s" : "" }}.
+        <div>
+          <div class="inline mt-1 text-lg font-bold">Liste des activités</div>
+          <div class="inline ml-3 text-sm">
+            {{ activities.length }} activité{{
+              activities.length > 1 ? "s" : ""
+            }}
+            détectée{{ activities.length > 1 ? "s" : "" }}.
+          </div>
         </div>
         <textarea
           class="w-full max-w-2xl"
@@ -145,7 +147,7 @@
         <button class="ml-2" @click="emptyGeneration">Vider</button>
       </div>
       <div class="flex mb-3">
-        <table class="border border-blue-300 border-solid ">
+        <table class="">
           <thead>
             <tr>
               <th class="h-5 cell">
@@ -165,7 +167,7 @@
           </tbody>
         </table>
 
-        <table class="border border-blue-300 border-solid">
+        <table class="">
           <thead>
             <tr>
               <th
@@ -216,40 +218,13 @@
         </table>
       </div>
       <div v-if="generated">
-        <div class="ml-1">
-          <div class="text-lg">Résultats</div>
-          <span>{{ assignedMembers.length }} assigné·es</span>
-          - <span>{{ membersNotAssigned.length }} non assigné·es</span>
-          <div class="mt-2 font-bold">Membres non assigné·es:</div>
-          <div class="flex flex-wrap justify-center">
-            <div class="ml-1" v-for="id in membersNotAssigned" :key="id">
-              {{ id }}
-            </div>
-          </div>
-        </div>
         <div>
           <div class="text-lg">Résultats</div>
           <div>
-            <ul v-if="false">
-              <li
-                v-for="assignationsForOneUser in assignationsByUser"
-                :key="assignationsForOneUser"
-              >
-                {{
-                  "userid:" + assignationsForOneUser ??
-                    assignationsForOneUser[0].id
-                }}
-                -
-                {{
-                  this.members.find(member => {
-                    return member.id == assignationsForOneUser[0].id ?? -1;
-                  }) != null
-                    ? this.members.find(member => {
-                        return member.id == assignationsForOneUser[0].id;
-                      }).name
-                    : assignationsForOneUser[0].id
-                }}
-                - {{ assignationsForOneUser ?? assignationsForOneUser.length }}
+            <ul>
+              <li v-for="member in assignationsByUser" :key="member.id">
+                {{ member.list.length ?? 0 }}
+                {{ getNameOfMember(member.id) }}
               </li>
             </ul>
           </div>
@@ -279,41 +254,24 @@ export default {
     assignationsByUser() {
       if (this.generated) {
         var assignations = [];
-
-        console.log(this.arrayOfCells);
+        var oneMemberAssignation;
 
         for (var member of this.members) {
-          console.log("member");
-          console.log(member);
-          console.log(assignations);
-          console.log("member.id:" + member.id);
-          //if (assignations[member.id] == undefined) {
-          //  console.log(assignations);
-          //
-          //  assignations[member.id] = [];
-          //}
-          //console.log(JSON.parse(JSON.stringify(this.cells)));
-
+          oneMemberAssignation = { id: member.id, list: null }; //an object (not an array) of assignations indexed by member id
           //Push all assignations of a user to the assignations array indexed by id
-          assignations[member.id] = JSON.parse(
+          oneMemberAssignation.list = JSON.parse(
             JSON.stringify(
               this.arrayOfCells.filter(cell => {
                 return cell.member == member.id;
               })
             )
           );
-
-          console.log(
-            JSON.parse(
-              JSON.stringify(
-                this.arrayOfCells.filter(cell => {
-                  return cell.member == member.id;
-                })
-              )
-            )
-          );
-          console.log(assignations);
+          assignations.push(oneMemberAssignation);
         }
+        //Sort by length of arrays descendant
+        assignations.sort((a, b) => {
+          return b.list.length - a.list.length;
+        });
         return assignations;
       }
       return [];
