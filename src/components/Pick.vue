@@ -18,7 +18,7 @@
 <template>
   <div class="flex">
     <div class="flex items-end flex-1 w-12 text-green-700">
-      <h1 class="inline text-3xl">PickThem</h1>
+      <h1 class="inline text-4xl">PickThem</h1>
       <span class="ml-1 text-sm italic" title="Publié le 31.07.2021."
         >v1.0</span
       >
@@ -59,7 +59,7 @@
   <div>
     <div class="flex flex-wrap">
       <div class="flex-1 mt-1 text-xl font-bold">Configuration</div>
-      <div class="mt-1">
+      <div class="flex items-end mt-1">
         <span class="not-italic"></span>
         <a
           href="https://github.com/samuelroland/PickThem/blob/main/HOWTOUSE.md#comment-utiliser"
@@ -206,7 +206,7 @@
                       : "/"
                   }}
                 </span>
-                <span v-if="false"> toassign: {{ cell.toassign ? 1 : 0 }}</span>
+                <span v-if="true"> toa{{ cell.toassign ? 1 : 0 }}</span>
                 <span class="text-xs" hidden>
                   {{ cell.id }} {{ cell.activity_name }}
                   {{ cell.activity_index }} u:{{ cell.member }}
@@ -219,7 +219,7 @@
       </div>
       <div v-if="generated">
         <div>
-          <div class="text-lg">Résultats</div>
+          <div class="text-lg font-bold">Statistiques</div>
           <div>
             <ul>
               <li v-for="member in assignationsByMember" :key="member.id">
@@ -316,7 +316,7 @@ export default {
         e.preventDefault();
         //Alert the user about what's happening
         alert(
-          "La modification de ce champ n'est pas permise car cela engendre la perte des résultats. Si vous voulez vraiment modifier ce champ, videz d'abord les résultats."
+          "La modification de ce champ n'est pas permise pour car cela supprime les résultats. Si vous voulez vraiment modifier ce champ, videz d'abord les résultats."
         );
       }
     },
@@ -392,7 +392,7 @@ export default {
             assignationCount++;
           }
         }
-        this.generated = true;
+        //TEMP comment: this.generated = true;
       }
     },
     emptyGeneration() {
