@@ -82,7 +82,8 @@
     </div>
     <div class="">
       <div class="w-full">
-        <div class="text-sm">
+        <div class="inline mt-1 text-lg font-bold">Liste des activités</div>
+        <div class="inline ml-3 text-sm">
           {{ activities.length }} activité{{
             activities.length > 1 ? "s" : ""
           }}
@@ -93,30 +94,34 @@
           v-model="activitiesRaw"
           rows="4"
           placeholder="Liste d'activités: Rentrez une activité par ligne."
+          @click="alertInputNotModifiableAfterGeneration"
+          :class="{ 'bg-gray-300': generated }"
+          :disabled="generated"
           @keyup="loadActivities"
         ></textarea>
       </div>
 
       <div class="w-full">
         <div class="text-sm">
-          {{ members.length }} membre{{
-            members.length > 1 ? "s" : ""
-          }}
-          détecté·e{{ members.length > 1 ? "s" : "" }}.
+          <div class="inline mt-1 text-lg font-bold">Liste des membres</div>
+          <div class="inline ml-3">
+            {{ members.length }} membre{{
+              members.length > 1 ? "s" : ""
+            }}
+            détecté·e{{ members.length > 1 ? "s" : "" }}.
+          </div>
           <input
             type="checkbox"
             v-model="priorityMode"
             id="priorityMode"
             class="ml-4"
             @change="loadMembers"
+            @click="alertInputNotModifiableAfterGeneration"
+            :class="{ 'bg-gray-300': generated }"
           /><label for="priorityMode" class="ml-1">Mode priorité.</label>
           <span v-if="priorityMode" class="ml-1">
-            {{
-              members.filter(user => {
-                return user.priority;
-              }).length
-            }}
-            membres en priorité.</span
+            {{ countPriorityMembers() }}
+            membre{{ countPriorityMembers() > 1 ? "s" : "" }} en priorité.</span
           >
         </div>
         <textarea
@@ -126,6 +131,7 @@
           placeholder="Liste de membres: Rentrez un·e membre par ligne."
           @keyup="loadMembers"
           @change="loadMembers"
+          :class="{ 'bg-gray-300': generated }"
         ></textarea>
       </div>
     </div>
@@ -174,6 +180,9 @@
                     :max="nbWeeks"
                     min="1"
                     @change="initCells"
+                    @click="alertInputNotModifiableAfterGeneration"
+                    :readonly="generated"
+                    :class="{ 'bg-gray-300': generated }"
                     v-model="activity.number"
                   />fois</span
                 >
@@ -184,14 +193,16 @@
           <tbody>
             <tr v-for="week in nbWeeksInInt" :key="week">
               <td class="cell" v-for="cell in cells[week]" :key="cell.id">
-                <span
-                  v-if="displayCellOrNot(cell.week_number, cell.activity_index)"
-                  class="text-sm"
-                >
-                  {{ cell.member != null ? getNameOfMember(cell.member) : "-" }}
+                <span class="text-base italic">
+                  {{
+                    cell.member != null
+                      ? getNameOfMember(cell.member)
+                      : cell.toassign == true
+                      ? "-"
+                      : "/"
+                  }}
                 </span>
-                <span v-else>--</span>
-                <span>toassign: {{ cell.toassign ? 1 : 0 }}</span>
+                <span v-if="false"> toassign: {{ cell.toassign ? 1 : 0 }}</span>
                 <span class="text-xs" hidden>
                   {{ cell.id }} {{ cell.activity_name }}
                   {{ cell.activity_index }} u:{{ cell.member }}
@@ -332,6 +343,23 @@ export default {
     }
   },
   methods: {
+    //Count priority members
+    countPriorityMembers() {
+      return this.members.filter(user => {
+        return user.priority;
+      }).length;
+    },
+    //If the user click on certain inputs after generation, alert that modification is not possible until results are emptied.
+    alertInputNotModifiableAfterGeneration(e) {
+      if (this.generated) {
+        //Prevent default behavior to block value modification
+        e.preventDefault();
+        //Alert the user about what's happening
+        alert(
+          "La modification de ce champ n'est pas permise car cela engendre la perte des résultats. Si vous voulez vraiment modifier ce champ, videz d'abord les résultats."
+        );
+      }
+    },
     //On change on this.nbWeeks through the input, set all activity.number to the new value
     onNbWeeksChange() {
       this.activities.forEach(activity => {
@@ -353,7 +381,6 @@ export default {
     generate() {
       var assignationCount = 0; //total number of assignations
       this.initCells();
-      this.generated = false;
 
       //Generate only if members and activities list are not empty
       if (this.members.length != 0 && this.activities.length != 0) {
@@ -523,6 +550,7 @@ export default {
         cells[i] = weekCollection;
       }
       this.cells = cells;
+      this.generated = false; //Everything is deleted after cells init, so define state as "not generated"
     }
   },
   mounted() {
