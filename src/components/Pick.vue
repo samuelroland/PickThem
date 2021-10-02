@@ -222,7 +222,7 @@
           <div class="text-lg">Résultats</div>
           <div>
             <ul>
-              <li v-for="member in assignationsByUser" :key="member.id">
+              <li v-for="member in assignationsByMember" :key="member.id">
                 {{ member.list.length ?? 0 }}
                 {{ getNameOfMember(member.id) }}
               </li>
@@ -251,14 +251,14 @@ export default {
     };
   },
   computed: {
-    assignationsByUser() {
+    assignationsByMember() {
       if (this.generated) {
         var assignations = [];
         var oneMemberAssignation;
 
         for (var member of this.members) {
           oneMemberAssignation = { id: member.id, list: null }; //an object (not an array) of assignations indexed by member id
-          //Push all assignations of a user to the assignations array indexed by id
+          //Push all assignations of a member to the assignations array indexed by id
           oneMemberAssignation.list = JSON.parse(
             JSON.stringify(
               this.arrayOfCells.filter(cell => {
@@ -305,8 +305,8 @@ export default {
   methods: {
     //Count priority members
     countPriorityMembers() {
-      return this.members.filter(user => {
-        return user.priority;
+      return this.members.filter(member => {
+        return member.priority;
       }).length;
     },
     //If the user click on certain inputs after generation, alert that modification is not possible until results are emptied.
@@ -356,7 +356,7 @@ export default {
             })
           );
 
-          //While some cells not assigned and should be assigned (toassign = true) exist for the week, assign users for these cells
+          //While some cells not assigned and should be assigned (toassign = true) exist for the week, assign members for these cells
           while (
             this.cells[weekId].find(cell => {
               return cell.member == null && cell.toassign == true;
@@ -416,7 +416,7 @@ export default {
       var randomInt = -1;
       var a = false;
       do {
-        //if all users have been attributed, put the list to zero to allow second round of attributions
+        //if all members have been assigned, put the list to zero to allow second round of attributions
         if (this.membersNotAssigned.length == 0) {
           this.assignedMembers = [];
         }
