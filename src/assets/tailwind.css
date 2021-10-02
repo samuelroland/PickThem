@@ -42,3 +42,7 @@ button {
 a {
   @apply italic font-semibold text-green-800 hover:text-green-500;
 }
+
+.interrogationmark {
+  @apply inline-flex items-center justify-center w-5 h-5 p-1 ml-1 text-sm bg-gray-200 rounded-full cursor-help;
+}

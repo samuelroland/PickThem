@@ -143,14 +143,23 @@
     <div class="justify-center w-full">
       <div class="flex items-center my-1">
         <div class="text-xl font-bold">Génération aléatoire</div>
-        <button class="ml-2" @click="generate">Générer</button>
-        <button class="ml-2" @click="emptyGeneration">Vider</button>
+        <button
+          class="ml-2 hover:bg-green-600 hover:text-gray-100"
+          @click="generate"
+        >
+          Générer
+        </button>
+        <button class="ml-2 hover:bg-red-300" @click="emptyGeneration">
+          Vider
+        </button>
       </div>
       <div class="flex mb-3">
+        <!-- First table at left containing empty header cell and weeks name cells. This table is separated from the second table to enable text selection of the generated values without week numbers -->
         <table class="">
           <thead>
             <tr>
               <th class="h-5 cell">
+                <!-- Fake hidden content to take the same place than other th -->
                 <div class="invisible">
                   <span class="text-sm">----</span><br />
                   <span class="text-xs">
@@ -162,21 +171,26 @@
           </thead>
           <tbody>
             <tr v-for="week in nbWeeksInInt" :key="week">
-              <td class="cell">Sem. {{ week }}</td>
+              <td class="cell ">Sem. {{ week }}</td>
             </tr>
           </tbody>
         </table>
 
+        <!-- Second table with activities in headers and generated values below -->
         <table class="">
           <thead>
             <tr>
               <th
-                class="cell"
+                class="overflow-hidden cell overflow-ellipsis"
                 v-for="activity in activities"
                 :key="activity.name"
               >
-                <span class="text-sm">{{ activity.name }}</span
-                ><br />
+                <span
+                  style=" display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;max-width: 15rem"
+                  class="overflow-hidden text-sm overflow-ellipsis"
+                  :title="activity.name"
+                  >{{ activity.name }}</span
+                >
                 <span class="text-xs">
                   <input
                     type="number"
@@ -188,10 +202,17 @@
                     :readonly="generated"
                     :class="{ 'bg-gray-300': generated }"
                     v-model="activity.number"
-                  />fois</span
-                >
+                /></span>
+                <span
+                  title="Nombre de semaines à assigner pour cette activité. Entre 1 et nombre de semaine de la plage (choisie plus haut)."
+                  class="interrogationmark"
+                  >?
+                </span>
               </th>
-              <th v-if="activities.length == 0">Pas d'activités...</th>
+              <!-- Cell to display when the array is empty because no activity is defined -->
+              <th v-if="activities.length == 0" class="p-2">
+                Pas d'activité...
+              </th>
             </tr>
           </thead>
           <tbody>
