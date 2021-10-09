@@ -114,20 +114,29 @@
             }}
             détecté·e{{ members.length > 1 ? "s" : "" }}.
           </div>
-          <input
-            type="checkbox"
-            v-model="priorityMode"
-            id="priorityMode"
-            class="ml-4"
-            @change="loadMembers"
-            @click="alertInputNotModifiableAfterGeneration"
-            :class="{ 'bg-gray-300': generated }"
-          /><label for="priorityMode" class="ml-1">Mode priorité.</label>
+          <div
+            class="inline p-1 ml-4 cursor-help hover:bg-gray-200"
+            title="Le mode priorité permet d'assigner d'abord les personnes marquées comme prioritaires (un P à la fin) avant les autres. Voir dans le manuel d'utilisation pour les détails."
+          >
+            <input
+              type="checkbox"
+              v-model="priorityMode"
+              id="priorityMode"
+              class=""
+              @change="loadMembers"
+              @click="alertInputNotModifiableAfterGeneration"
+              :class="{ 'bg-gray-300': generated }"
+            /><label for="priorityMode" class="ml-1 font-semibold cursor-help"
+              >Mode priorité.</label
+            >
+          </div>
+
           <span v-if="priorityMode" class="ml-1">
             {{ countPriorityMembers() }}
             membre{{ countPriorityMembers() > 1 ? "s" : "" }} prioritaire{{
               countPriorityMembers() > 1 ? "s" : ""
-            }}.</span
+            }}
+            détecté·e{{ members.length > 1 ? "s" : "" }}.</span
           >
         </div>
         <textarea
