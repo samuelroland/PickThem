@@ -189,7 +189,7 @@
               >
                 <span
                   style=" display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;max-width: 15rem"
-                  class="overflow-hidden text-sm overflow-ellipsis"
+                  class="overflow-hidden text-sm break-words overflow-ellipsis"
                   :title="activity.name"
                   >{{ activity.name }}</span
                 >
@@ -229,7 +229,8 @@
                   class="text-base italic"
                   :class="{
                     'font-bold':
-                      cell.member != null
+                      cell.member != null &&
+                      members[cell.member - 1] != undefined
                         ? members[cell.member - 1].priority && priorityMode
                         : false
                   }"
