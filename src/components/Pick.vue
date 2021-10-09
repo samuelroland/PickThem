@@ -36,9 +36,16 @@
       title="Random members picker, to define the people responsible for things to do in a collective, over a given period and activities."
       class="mt-1 font-bold"
     >
-      Choix aléatoire de membres, pour définir les responsables des choses à
-      faire dans un collectif, sur une période et des activités données.
+      Génération aléatoire<sup>*</sup> de membres, pour chaque activité
+      reproductive à faire dans un collectif, sur une plage et des activités
+      données. Chaque assignation concerne 1 activité et un·e membre et dure 1
+      semaine.
     </h4>
+    <div class="text-sm italic text-green-600">
+      <sup>*</sup>Afin de faire participer un maximum de monde et de répartir au
+      mieux la charge de travail, la génération n'est pas entièrement
+      aléatoire... Plus de détails dans le manuel d'utilisation.
+    </div>
     <span class="text-xs">
       Réalisé par
       <a href="https://github.com/samuelroland" target="_blank"
@@ -164,7 +171,7 @@
           Vider ...
         </button>
       </div>
-      <div class="flex mb-3">
+      <div class="flex mb-1">
         <!-- First table at left containing empty header cell and weeks name cells. This table is separated from the second table to enable text selection of the generated values without week numbers -->
         <table class="">
           <thead>
@@ -262,6 +269,9 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="mb-3 text-sm italic text-green-600">
+        Voir le manuel d'utilisation pour les légendes des symboles.
       </div>
 
       <!-- Statistics zone -->
