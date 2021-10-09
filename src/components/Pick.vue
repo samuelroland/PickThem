@@ -130,7 +130,7 @@
               v-model="priorityMode"
               id="priorityMode"
               class=""
-              @change="loadMembers"
+              @change="initMembersAndCells"
               @click="alertInputNotModifiableAfterGeneration"
               :class="{ 'bg-gray-300': generated }"
             /><label for="priorityMode" class="ml-1 font-semibold cursor-help"
@@ -464,6 +464,10 @@ export default {
     }
   },
   methods: {
+    initMembersAndCells() {
+      this.loadMembers();
+      this.initCells();
+    },
     //Get array of members who have a certain number of assignations (useful for the statistics table)
     membersForGivenAssignationCount(count) {
       var array = [];
@@ -665,6 +669,7 @@ export default {
 
     //Init this.cells with given activities and different numbers of week
     initCells() {
+      console.log("initCells");
       var counter = 0; //Counter of created cell to assign id to cell
       var cells = {}; //Cells array under construction. The array is indexed by week number and then by activity index. (Be careful between difference with index and number !)
 
