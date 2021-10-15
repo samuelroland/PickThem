@@ -591,7 +591,7 @@ export default {
     getRandomNotAssignedMember(priorityMemberOnly = false) {
       var randomMemberId = -1;
 
-      //Search for a random member not assigned (look in notAssignedMembers for that) and that is priority if required
+      //Search for a random member not assigned (look in notAssignedMembers for that) and who is priority if required
       do {
         //When every member has been assigned, reset the assignedMembers array for the next round
         if (this.membersNotAssigned.length == 0) {
