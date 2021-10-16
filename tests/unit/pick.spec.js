@@ -35,3 +35,19 @@ test("Version and version date given in props are rendered", () => {
     "cursor-help"
   );
 });
+
+test("logger method log() is disabled when testing", () => {
+  //Arrange
+  const wrapper = mount(Pick);
+  console.log = jest.fn(); //mock function console.log
+  console.info = jest.fn(); //mock function console.log
+
+  //Act to use the log() method and then see if log in console or not
+  wrapper.vm.log("hey");
+  wrapper.vm.log("hey", "some value");
+  wrapper.vm.log({ msg: "hey" }, "some value");
+
+  //Assert that console.log has not been called
+  expect(console.log).toHaveBeenCalledTimes(0);
+  expect(console.info).toHaveBeenCalledTimes(0);
+});

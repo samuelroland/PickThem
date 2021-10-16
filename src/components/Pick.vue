@@ -413,7 +413,11 @@ export default {
   },
   props: {
     version: String,
-    versionDate: String
+    versionDate: String,
+    testing: {
+      type: Boolean,
+      default: true //to avoid giving testing true for each test, and way more easier to set to false in the App component.
+    }
   },
   computed: {
     //Get the biggest assignation count for the statistics array with the first row
@@ -489,8 +493,8 @@ export default {
           array.push(this.members[member.id - 1]); //push the member object to the array
         }
       }
-      console.log(count);
-      console.log(array);
+      this.log(count, "count in membersForGivenAssignationCount()");
+      this.log(array);
       return array;
     },
     //Count priority members
@@ -535,12 +539,12 @@ export default {
       //Generate only if members and activities list are not empty
       if (this.members.length != 0 && this.activities.length != 0) {
         this.assignedMembers = []; //Clear assigned members list defined at last generation
-        console.log("generate()");
+        this.log("generate()");
 
         //For each week (each line of the array)
         for (var weekId = 1; weekId <= this.nbWeeks; weekId++) {
-          console.log("test cells i find");
-          console.log(
+          this.log("test cells i find");
+          this.log(
             this.cells[weekId].find(cell => {
               return cell.member == null;
             })
@@ -552,7 +556,7 @@ export default {
               return cell.member == null && cell.toassign == true;
             }) != undefined
           ) {
-            console.log("while 281");
+            this.log("while 281");
 
             var cell = null;
             var activityIndex = null;
@@ -563,8 +567,8 @@ export default {
               activityIndex = Math.round(
                 Math.random() * (this.activities.length - 1)
               );
-              //console.log(activityIndex);
-              //console.log(this.cells[weekId]);
+              //this.log(activityIndex);
+              //this.log(this.cells[weekId]);
               cell = this.cells[weekId][activityIndex];
             } while (cell.member != null || cell.toassign != true); //and continue while no cell without member is found (will not cause infinite loop because parent)
 
@@ -682,7 +686,7 @@ export default {
 
     //Init this.cells with given activities and different numbers of week
     initCells() {
-      console.log("initCells");
+      this.log("initCells");
       var counter = 0; //Counter of created cell to assign id to cell
       var cells = {}; //Cells array under construction. The array is indexed by week number and then by activity index. (Be careful between difference with index and number !)
 
@@ -709,6 +713,35 @@ export default {
       }
       this.cells = cells;
       this.generated = false; //Everything is deleted after cells init, so define state as "not generated"
+    },
+    //Log a value to the console
+    log(value, name = null) {
+      //Log only if not currently testing
+      if (this.testing == false) {
+        var valueType = typeof value;
+
+        //If type of the value is scalar
+        if (
+          valueType == "string" ||
+          valueType == "number" ||
+          valueType == "boolean"
+        ) {
+          console.info((name ?? "value") + " (scalar): " + value ?? "null");
+        } else {
+          //Else the type of the values is object or array
+          var string = typeof value;
+
+          //Add name if given
+          if (name != null) {
+            string += " " + name;
+          }
+          string += ": ";
+
+          //Log title before value (because not possible to concatenate)
+          console.info(string);
+          console.log(JSON.parse(JSON.stringify(value))); //Finally log value with a deep clone to avoid proxy
+        }
+      }
     }
   },
   mounted() {

@@ -17,7 +17,7 @@
 -->
 <template>
   <div class="p-5">
-    <Pick :version="version" :versionDate="versionDate" />
+    <Pick :version="version" :versionDate="versionDate" :testing="false" />
   </div>
 </template>
 
