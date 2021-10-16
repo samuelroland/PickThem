@@ -391,6 +391,43 @@
         </div>
       </div>
     </div>
+
+    <div class="w-full mt-5">
+      <hr />
+      <div class="flex items-center my-1">
+        <div class="mr-3 text-xl font-bold">Pick One</div>
+
+        <button
+          class="ml-2 hover:bg-green-600 hover:text-gray-100"
+          @click="generateOne"
+        >
+          Générer
+        </button>
+        <button class="ml-2 hover:bg-red-300" @click="emptyOne">
+          Vider
+        </button>
+        <input
+          type="checkbox"
+          v-model="priorityModeForPickOne"
+          id="priorityModeForPickOne"
+          class="ml-2"
+        /><label
+          for="priorityModeForPickOne"
+          class="ml-1 font-semibold cursor-help"
+          >Membre prioritaire.</label
+        >
+      </div>
+      <div class="mb-1 text-sm italic text-green-600 ">
+        Tirer au sort 1 membre. (Prioritaire ou non).
+      </div>
+      <div class="flex items-center h-10 max-w-xs cell">
+        {{
+          randomMemberForPickOne == null
+            ? "-"
+            : getNameOfMember(randomMemberForPickOne)
+        }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -399,7 +436,9 @@ export default {
   name: "Pick",
   data() {
     return {
+      randomMemberForPickOne: null,
       priorityMode: true,
+      priorityModeForPickOne: true,
       generated: false,
       nbWeeks: 2,
       activitiesRaw: "Vaisselle\nRangement\nLessive",
@@ -539,7 +578,12 @@ export default {
     getRandomValue(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
-
+    generateOne() {
+      this.randomMemberForPickOne = this.getOneRandomMember();
+    },
+    emptyOne() {
+      this.randomMemberForPickOne = null;
+    },
     generate() {
       var assignationCount = 0; //total number of assignations
       this.initCells();
