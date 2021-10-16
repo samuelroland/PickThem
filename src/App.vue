@@ -17,7 +17,7 @@
 -->
 <template>
   <div class="p-5">
-    <Pick />
+    <Pick :version="version" :versionDate="versionDate" />
   </div>
 </template>
 
@@ -28,6 +28,13 @@ export default {
   name: "App",
   components: {
     Pick
+  },
+  data() {
+    return {
+      //App version and release date
+      version: "v1.0",
+      versionDate: "31.07.2021"
+    };
   }
 };
 </script>

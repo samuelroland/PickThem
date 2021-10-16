@@ -19,8 +19,11 @@
   <div class="flex">
     <div class="flex items-end flex-1 w-12 text-green-700">
       <h1 class="inline text-4xl">PickThem</h1>
-      <span class="ml-1 text-sm italic" title="Publié le 31.07.2021."
-        >v1.0</span
+      <span
+        class="ml-1 text-sm italic cursor-help"
+        data-test="version"
+        :title="'Publié le ' + versionDate + '.'"
+        >{{ version }}</span
       >
     </div>
     <div>
@@ -86,6 +89,7 @@
           type="number"
           min="1"
           v-model="nbWeeks"
+          data-test="nbWeeks"
         />
       </div>
     </div>
@@ -164,10 +168,15 @@
         <button
           class="ml-2 hover:bg-green-600 hover:text-gray-100"
           @click="generate"
+          data-test="generate"
         >
           Générer
         </button>
-        <button class="ml-2 hover:bg-red-300" @click="emptyGeneration">
+        <button
+          class="ml-2 hover:bg-red-300"
+          @click="emptyGeneration"
+          data-test="empty"
+        >
           Vider ...
         </button>
       </div>
@@ -401,6 +410,10 @@ export default {
       membersRaw:
         "Johndoe	P\nAlicia	P\nJack\nLion\nJulie\nSam	P\nJohnson\nLili\nMila	P"
     };
+  },
+  props: {
+    version: String,
+    versionDate: String
   },
   computed: {
     //Get the biggest assignation count for the statistics array with the first row

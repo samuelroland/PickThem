@@ -19,3 +19,19 @@ test("Basic information are visible", () => {
   expect(wrapper.text()).toContain("Samuel Roland");
   expect(wrapper.text()).toContain("code source");
 });
+
+test("Version and version date given in props are rendered", () => {
+  //Arrange
+  const wrapper = mount(Pick, {
+    props: { version: "v0.0.0.0", versionDate: "05.02.1900" }
+  });
+
+  //Assert version and version date are visible and that cursor help is applied
+  expect(wrapper.text()).toContain("v0.0.0.0");
+  expect(wrapper.find('[data-test="version"]').attributes("title")).toContain(
+    "05.02.1900"
+  );
+  expect(wrapper.find('[data-test="version"]').classes()).toContain(
+    "cursor-help"
+  );
+});
