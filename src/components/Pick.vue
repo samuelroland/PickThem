@@ -584,6 +584,18 @@ export default {
     emptyOne() {
       this.randomMemberForPickOne = null;
     },
+    someCellsNeedToBeAssigned() {
+      for (var weekId = 1; weekId <= this.nbWeeks; weekId++) {
+        var result =
+          this.cells[weekId].find(cell => {
+            return cell.member == null && cell.toassign == true;
+          }) != undefined;
+        if (result == true) {
+          return true;
+        }
+      }
+      return false;
+    },
     generate() {
       var assignationCount = 0; //total number of assignations
       this.initCells();
@@ -593,48 +605,30 @@ export default {
         this.assignedMembers = []; //Clear assigned members list defined at last generation
         this.log("generate()");
 
-        //For each week (each line of the array)
-        for (var weekId = 1; weekId <= this.nbWeeks; weekId++) {
-          this.log("test cells i find");
-          this.log(
-            this.cells[weekId].find(cell => {
-              return cell.member == null;
-            })
-          );
+        //While some cells need to be assigned yet
+        while (this.someCellsNeedToBeAssigned()) {
+          //Search for a random cell in the array (random week and random activity) that needs to be assigned
+          do {
+            var weekId = this.getRandomValue(1, this.nbWeeks);
+            var activityIndex = this.getRandomValue(
+              0,
+              this.activities.length - 1
+            );
 
-          //While some cells not assigned and that should be assigned (toassign = true) exist for the current week, continue to assign members for these cells
-          while (
-            this.cells[weekId].find(cell => {
-              return cell.member == null && cell.toassign == true;
-            }) != undefined
-          ) {
-            this.log("while 281");
+            var cell = this.cells[weekId][activityIndex];
+          } while (cell.member != null || cell.toassign != true);
 
-            var cell = null;
-            var activityIndex = null;
-
-            //In this week, find randomly a cell without any member
-            do {
-              //Cell is chosen depending on the activity, so generate a random int between 0 and (nb of activities -1)
-              activityIndex = Math.round(
-                Math.random() * (this.activities.length - 1)
-              );
-              //this.log(activityIndex);
-              //this.log(this.cells[weekId]);
-              cell = this.cells[weekId][activityIndex];
-            } while (cell.member != null || cell.toassign != true); //and continue while no cell without member is found (will not cause infinite loop because parent)
-
-            var priorityMemberOnly = false;
-            if (this.priorityMode) {
-              // In yet in priority member assignation because number of members in priority in higher than assignations count.
-              priorityMemberOnly =
-                this.countPriorityMembers() > assignationCount;
-            }
-
-            cell.member = this.getRandomNotAssignedMember(priorityMemberOnly);
-            this.cells[weekId][activityIndex] = cell;
-            assignationCount++;
+          var priorityMemberOnly = false; //by default, when priorityMode is disabled
+          if (this.priorityMode) {
+            // In yet in priority member assignation because number of members in priority in higher than assignations count.
+            priorityMemberOnly = this.countPriorityMembers() > assignationCount;
           }
+
+          //Assign the cell
+          cell.member = this.getRandomNotAssignedMember(priorityMemberOnly);
+          //Save the cells and count the assignation
+          this.cells[weekId][activityIndex] = cell;
+          assignationCount++;
         }
         //TEMP comment: this.generated = true;
       }
