@@ -532,6 +532,14 @@ export default {
         return "??";
       }
     },
+    getOneRandomMember() {
+      return this.getRandomValue(1, this.members.length);
+    },
+
+    getRandomValue(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+
     generate() {
       var assignationCount = 0; //total number of assignations
       this.initCells();
