@@ -396,7 +396,7 @@
 
     <div class="w-full mt-5">
       <hr />
-      <div class="flex items-center my-1">
+      <div class="flex items-center mt-1">
         <div class="mr-3 text-xl font-bold">Pick One</div>
 
         <button
@@ -576,7 +576,6 @@ export default {
     getOneRandomMember() {
       return this.getRandomValue(1, this.members.length);
     },
-
     getRandomValue(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
@@ -663,7 +662,7 @@ export default {
           this.assignedMembers = [];
         }
 
-        randomMemberId = Math.round(Math.random() * (this.nbMembers - 1)) + 1; //get a random member id (random integer between 1 and nbMembers inclusive)
+        randomMemberId = this.getRandomValue(1, this.nbMembers); //get a random member id (random integer between 1 and nbMembers inclusive)
 
         //Is the member in priority (if required by priorityMemberOnly) ?
         var isPriorityIfRequired = priorityMemberOnly
