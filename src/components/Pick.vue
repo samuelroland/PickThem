@@ -383,7 +383,9 @@
                       }).length
                     }}
                   </td>
-                  <td class="text-center cell">{{ this.members.length }}</td>
+                  <td class="text-center cell">
+                    Nb. membres: {{ this.members.length }}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -683,22 +685,17 @@ export default {
       });
       this.members = [];
       for (var name of array) {
+        name = name.trim();
         counter++;
         this.members.push({
           id: counter,
-          name: this.priorityMode
-            ? name
-                .trim()
-                .substring(
-                  0,
-                  name.trim().indexOf("\t") != -1
-                    ? name.trim().indexOf("\t")
-                    : name.trim().length
-                )
-            : name,
-          //If priority mode enabled, set priority if last char is P, or set null.
+          name:
+            name.indexOf("\t") == -1
+              ? name //if no tab just return the name
+              : name.substring(0, name.indexOf("\t")), //else, just extract the name between char 0 and position of the tab
+          //If priority mode enabled, set priority whether the last char equal to P, or set null.
           priority: this.priorityMode
-            ? name.trim().charAt(name.trim().length - 1) == "P"
+            ? name.substr(name.length - 2) == "\tP"
             : null
         });
       }
