@@ -90,6 +90,7 @@
           min="1"
           v-model="nbWeeks"
           data-test="nbWeeks"
+          :class="{ 'bg-gray-300': generated }"
         />
       </div>
     </div>
@@ -120,10 +121,10 @@
         <div class="text-sm">
           <div class="inline mt-1 text-lg font-bold">Liste des membres</div>
           <div class="inline ml-3">
-            {{ members.length }} membre{{
-              members.length > 1 ? "s" : ""
+            {{ this.nbMembers }} membre{{
+              this.nbMembers > 1 ? "s" : ""
             }}
-            détecté·e{{ members.length > 1 ? "s" : "" }}.
+            détecté·e{{ this.nbMembers > 1 ? "s" : "" }}.
           </div>
           <div
             class="inline p-1 ml-4 cursor-help hover:bg-gray-200"
@@ -147,7 +148,7 @@
             membre{{ countPriorityMembers() > 1 ? "s" : "" }} prioritaire{{
               countPriorityMembers() > 1 ? "s" : ""
             }}
-            détecté·e{{ members.length > 1 ? "s" : "" }}.</span
+            détecté·e{{ countPriorityMembers().length > 1 ? "s" : "" }}.</span
           >
         </div>
         <textarea
@@ -284,8 +285,7 @@
       </div>
 
       <!-- Statistics zone -->
-      <div v-if="true">
-        <!-- debug temp -->
+      <div v-if="generated">
         <div>
           <div class="text-lg font-bold">Statistiques</div>
           <div>
@@ -384,7 +384,7 @@
                     }}
                   </td>
                   <td class="text-center cell">
-                    Nb. membres: {{ this.members.length }}
+                    Nb. membres: {{ this.nbMembers }}
                   </td>
                 </tr>
               </tbody>
@@ -477,8 +477,8 @@ export default {
       return max;
     },
     assignationsByMember() {
-      //debug temp
-      if (this.generated == false) {
+      //Return assignations only if generated
+      if (this.generated == true) {
         var assignations = [];
         var oneMemberAssignation;
 
@@ -519,7 +519,7 @@ export default {
     },
     arrayOfCells() {
       var array = [];
-      if (this.members.length > 0 && this.activities.length > 0)
+      if (this.nbMembers > 0 && this.activities.length > 0)
         for (var cellByWeek in this.cells) {
           for (var cell of this.cells[cellByWeek]) {
             array.push(cell);
@@ -584,13 +584,13 @@ export default {
       if (this.nbMembers != 0) {
         if (this.countPriorityMembers() > 0 && priorityOnly == true) {
           do {
-            var potentialId = this.getRandomValue(1, this.members.length);
+            var potentialId = this.getRandomValue(1, this.nbMembers);
             var potentialMember = this.members[potentialId - 1];
           } while (potentialMember.priority != true);
           return potentialId;
         } else {
           //no question of priority, so generate it.
-          return this.getRandomValue(1, this.members.length);
+          return this.getRandomValue(1, this.nbMembers);
         }
       }
     },
@@ -622,7 +622,7 @@ export default {
       this.initCells();
 
       //Generate only if members and activities list are not empty
-      if (this.members.length != 0 && this.activities.length != 0) {
+      if (this.nbMembers != 0 && this.activities.length != 0) {
         this.assignedMembers = []; //Clear assigned members list defined at last generation
         this.log("generate()");
 
@@ -651,7 +651,7 @@ export default {
           this.cells[weekId][activityIndex] = cell;
           assignationCount++;
         }
-        //TEMP comment: this.generated = true;
+        this.generated = true;
       }
     },
     emptyGeneration() {
