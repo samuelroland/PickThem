@@ -32,8 +32,8 @@ export default {
   data() {
     return {
       //App version and release date
-      version: "v1.0",
-      versionDate: "31.07.2021"
+      version: "v1.1",
+      versionDate: "17.10.2021"
     };
   }
 };
