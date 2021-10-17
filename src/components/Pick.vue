@@ -44,7 +44,7 @@
       données. Chaque assignation concerne 1 activité et un·e membre et dure 1
       semaine.
     </h4>
-    <div class="text-sm italic text-green-600">
+    <div class="text-xs italic text-green-600">
       <sup>*</sup>Afin de faire participer un maximum de monde et de répartir au
       mieux la charge de travail, la génération n'est pas entièrement
       aléatoire... Plus de détails dans le manuel d'utilisation.
@@ -450,14 +450,13 @@ export default {
       priorityMode: true,
       priorityModeForPickOne: false,
       generated: false,
-      nbWeeks: 2,
-      activitiesRaw: "Vaisselle\nRangement\nLessive",
+      nbWeeks: 6,
+      activitiesRaw: "",
       cells: [],
       activities: [],
       assignedMembers: [],
       members: [],
-      membersRaw:
-        "Johndoe	P\nAlicia	P\nJack\nLion\nJulie\nSam	P\nJohnson\nLili\nMila	P"
+      membersRaw: ""
     };
   },
   props: {
@@ -582,15 +581,17 @@ export default {
       }
     },
     getOneRandomMember(priorityOnly = false) {
-      if (this.countPriorityMembers() > 0 && priorityOnly == true) {
-        do {
-          var potentialId = this.getRandomValue(1, this.members.length);
-          var potentialMember = this.members[potentialId - 1];
-        } while (potentialMember.priority != true);
-        return potentialId;
-      } else {
-        //no question of priority, so generate it.
-        return this.getRandomValue(1, this.members.length);
+      if (this.nbMembers != 0) {
+        if (this.countPriorityMembers() > 0 && priorityOnly == true) {
+          do {
+            var potentialId = this.getRandomValue(1, this.members.length);
+            var potentialMember = this.members[potentialId - 1];
+          } while (potentialMember.priority != true);
+          return potentialId;
+        } else {
+          //no question of priority, so generate it.
+          return this.getRandomValue(1, this.members.length);
+        }
       }
     },
     getRandomValue(min, max) {
