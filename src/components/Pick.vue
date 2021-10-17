@@ -422,7 +422,15 @@
       <div class="mb-1 text-sm italic text-green-600 ">
         Tirer au sort 1 membre. (Prioritaire ou non).
       </div>
-      <div class="flex items-center h-10 max-w-xs cell">
+      <div
+        class="flex items-center h-10 max-w-xs cell"
+        :class="{
+          'font-bold':
+            randomMemberForPickOne != null
+              ? members[randomMemberForPickOne - 1].priority
+              : false
+        }"
+      >
         {{
           randomMemberForPickOne == null
             ? "-"
@@ -440,7 +448,7 @@ export default {
     return {
       randomMemberForPickOne: null,
       priorityMode: true,
-      priorityModeForPickOne: true,
+      priorityModeForPickOne: false,
       generated: false,
       nbWeeks: 2,
       activitiesRaw: "Vaisselle\nRangement\nLessive",
@@ -573,14 +581,25 @@ export default {
         return "??";
       }
     },
-    getOneRandomMember() {
-      return this.getRandomValue(1, this.members.length);
+    getOneRandomMember(priorityOnly = false) {
+      if (this.countPriorityMembers() > 0 && priorityOnly == true) {
+        do {
+          var potentialId = this.getRandomValue(1, this.members.length);
+          var potentialMember = this.members[potentialId - 1];
+        } while (potentialMember.priority != true);
+        return potentialId;
+      } else {
+        //no question of priority, so generate it.
+        return this.getRandomValue(1, this.members.length);
+      }
     },
     getRandomValue(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
     generateOne() {
-      this.randomMemberForPickOne = this.getOneRandomMember();
+      this.randomMemberForPickOne = this.getOneRandomMember(
+        this.priorityModeForPickOne
+      );
     },
     emptyOne() {
       this.randomMemberForPickOne = null;
