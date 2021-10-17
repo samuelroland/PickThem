@@ -90,6 +90,8 @@
           min="1"
           v-model="nbWeeks"
           data-test="nbWeeks"
+          :readonly="generated"
+          @click.prevent.stop="alertInputNotModifiableAfterGeneration"
           :class="{ 'bg-gray-300': generated }"
         />
       </div>
@@ -558,7 +560,7 @@ export default {
         e.preventDefault();
         //Alert the user about what's happening
         alert(
-          "La modification de ce champ n'est pas permise pour car cela supprime les résultats. Si vous voulez vraiment modifier ce champ, videz d'abord les résultats."
+          "La modification de ce champ n'est pas permise pour éviter de supprimer les résultats. Si vous voulez vraiment modifier ce champ, videz d'abord les résultats."
         );
       }
     },
