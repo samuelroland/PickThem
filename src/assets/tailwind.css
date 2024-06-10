@@ -1,4 +1,4 @@
-<!--
+/*
     PickThem - Random members picker, to define the people responsible for things to do in a collective, over a given period and activities.
     Copyright (C) 2021 Samuel Roland
 
@@ -14,37 +14,35 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
--->
-<template>
-	<div class="p-5">
-	  <Pick :version="version" :versionDate="versionDate" :testing="false" />
-	</div>
-  </template>
-  
-  <script>
-  import Pick from "./components/Pick.vue";
-  
-  export default {
-	name: "App",
-	components: {
-	  Pick
-	},
-	data() {
-	  return {
-		//App version and release date
-		version: "v1.1",
-		versionDate: "17.10.2021"
-	  };
-	}
-  };
-  </script>
-  
-  <style>
-  #app {
-	font-family: Avenir, Helvetica, Arial, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	color: #2c3e50;
-  }
-  </style>
-  
+*/
+
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+.cell {
+  @apply px-1 border border-green-600 border-solid;
+}
+
+table {
+  @apply border border-green-900 border-solid rounded-lg;
+}
+
+input,
+textarea {
+  @apply px-1 my-1 border border-green-700 border-solid;
+}
+
+button {
+  @apply px-1 font-bold bg-gray-300 rounded-sm hover:bg-gray-400;
+}
+
+a {
+  @apply italic font-semibold text-green-800 hover:text-green-500;
+}
+
+.interrogationmark {
+  @apply inline-flex items-center justify-center w-5 h-5 p-1 ml-1 text-sm bg-gray-200 rounded-full cursor-help;
+}
