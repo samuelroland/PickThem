@@ -1,64 +1,32 @@
 {
-	"name": "pickthem",
-	"version": "1.1.0",
-	"private": true,
-	"scripts": {
-		"serve": "vue-cli-service serve",
-		"build": "vue-cli-service build",
-		"test:unit": "vue-cli-service test:unit",
-		"test:watch": "vue-cli-service test:unit --watch",
-		"lint": "vue-cli-service lint"
-	},
-	"dependencies": {
-		"@tailwindcss/postcss7-compat": "^2.0.2",
-		"autoprefixer": "^9",
-		"core-js": "^3.6.5",
-		"postcss": "^7",
-		"tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
-		"vue": "^3.0.0"
-	},
-	"devDependencies": {
-		"@vue/cli-plugin-babel": "~4.5.0",
-		"@vue/cli-plugin-eslint": "~4.5.0",
-		"@vue/cli-plugin-unit-jest": "^4.5.14",
-		"@vue/cli-service": "~4.5.0",
-		"@vue/compiler-sfc": "^3.0.0",
-		"@vue/test-utils": "^2.0.0-0",
-		"babel-eslint": "^10.1.0",
-		"eslint": "^6.7.2",
-		"eslint-plugin-vue": "^7.0.0",
-		"typescript": "~3.9.3",
-		"vue-cli-plugin-tailwind": "~2.0.6",
-		"vue-jest": "^5.0.0-0"
-	},
-	"eslintConfig": {
-		"root": true,
-		"env": {
-			"node": true
-		},
-		"extends": [
-			"plugin:vue/vue3-essential",
-			"eslint:recommended"
-		],
-		"parserOptions": {
-			"parser": "babel-eslint"
-		},
-		"rules": {},
-		"overrides": [
-			{
-				"files": [
-					"**/__tests__/*.{j,t}s?(x)",
-					"**/tests/unit/**/*.spec.{j,t}s?(x)"
-				],
-				"env": {
-					"jest": true
-				}
-			}
-		]
-	},
-	"browserslist": [
-		"> 1%",
-		"last 2 versions",
-		"not dead"
-	]
+  "name": "pickthem",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "format": "prettier --write src/"
+  },
+  "dependencies": {
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.8.0",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/test-utils": "^2.4.5",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.23.0",
+    "jsdom": "^24.0.0",
+    "postcss": "^8.4.38",
+    "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.4",
+    "vite": "^5.2.8",
+    "vitest": "^1.4.0"
+  }
 }

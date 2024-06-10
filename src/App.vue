@@ -16,34 +16,35 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <template>
-  <div class="p-5">
-    <Pick :version="version" :versionDate="versionDate" :testing="false" />
-  </div>
-</template>
-
-<script>
-import Pick from "./components/Pick.vue";
-
-export default {
-  name: "App",
-  components: {
-    Pick
-  },
-  data() {
-    return {
-      //App version and release date
-      version: "v1.1",
-      versionDate: "17.10.2021"
-    };
+	<div class="p-5">
+	  <Pick :version="version" :versionDate="versionDate" :testing="false" />
+	</div>
+  </template>
+  
+  <script>
+  import Pick from "./components/Pick.vue";
+  
+  export default {
+	name: "App",
+	components: {
+	  Pick
+	},
+	data() {
+	  return {
+		//App version and release date
+		version: "v1.1",
+		versionDate: "17.10.2021"
+	  };
+	}
+  };
+  </script>
+  
+  <style>
+  #app {
+	font-family: Avenir, Helvetica, Arial, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	color: #2c3e50;
   }
-};
-</script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
-</style>
+  </style>
+  
